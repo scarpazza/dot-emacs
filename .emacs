@@ -3,16 +3,17 @@
 (setq lexical-binding t)
 (setq gc-cons-threshold 10000000)
 
-(setq use-package-always-ensure t)
+(setq )
+(show-paren-mode 1)
 
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
-(setq custom-safe-themes t)
-
 (setq
+   custom-safe-themes t
+   use-package-always-ensure t
    ;; No need to see GNU agitprop.
    inhibit-startup-screen t
    ;; No need to remind me what a scratch buffer is.
@@ -49,10 +50,11 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
-;; USERNAME LOOKUP UTILITIES
-;;
-;; username
-(defun scarpaz-lookup-user ()
+
+;; USER LOOKUP UTILITIES
+;; (intended to check user mentions in bitbucket markdown documents as you type them)
+;; ... unfinished
+(defun scarpaz/lookup-user ()
   "Interpret the current word as a username (ignoring any @ prefixes) and finger that user."
   (interactive)
   (let ((username (replace-regexp-in-string "@" "" (thing-at-point 'word) )))
@@ -60,6 +62,19 @@
 	     (shell-command-to-string (format "finger %s" username)
 	   ))))
 
+
+;; hook a finger lookup to every word starting with '@'
+(defun scarpaz/lookup-if-user (begin end length)
+  "If current word starts with @, look it up as a user."
+  (interactive)
+  (let ( ( username   (thing-at-point 'word))
+	 ( beforeword (char-before (car (bounds-of-thing-at-point 'word ))))
+	 )
+    (when (and (eq ?@ beforeword) (> (length username) 2)) 
+      (message "%s = %s" username
+	       (shell-command-to-string (format "finger %s" username)
+					)))))
+(add-hook 'after-change-functions 'scarpaz/lookup-if-user nil t)
 
 
 ;; SAVE-TIME TWEAKS
@@ -88,9 +103,6 @@
 ;;
 
 (global-set-key [f8] 'kill-buffer)  # F8 is kill buffer, like "delete" in Norton Commander
-
-
-
 
 
 ;; Never mix tabs and spaces. Never use tabs, period.
