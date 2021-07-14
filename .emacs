@@ -49,6 +49,19 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
+;; USERNAME LOOKUP UTILITIES
+;;
+;; username
+(defun scarpaz-lookup-user ()
+  "Interpret the current word as a username (ignoring any @ prefixes) and finger that user."
+  (interactive)
+  (let ((username (replace-regexp-in-string "@" "" (thing-at-point 'word) )))
+    (message "%s = %s" username
+	     (shell-command-to-string (format "finger %s" username)
+	   ))))
+
+
+
 ;; SAVE-TIME TWEAKS
 ;;
 ;; When I'm working on text (fundamental mode or markdown) 
