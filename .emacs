@@ -3,7 +3,6 @@
 (setq lexical-binding t)
 (setq gc-cons-threshold 10000000)
 
-(setq )
 (show-paren-mode 1)
 
 (require 'package)
