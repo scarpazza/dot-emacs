@@ -10,36 +10,63 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
+
 (setq
-   custom-safe-themes t
+   custom-safe-themes        t
    use-package-always-ensure t
-   ;; No need to see GNU agitprop.
-   inhibit-startup-screen t
-   ;; No need to remind me what a scratch buffer is.
-   initial-scratch-message nil
-   ;; Never ding at me, ever.
-   ring-bell-function 'ignore
-   ;; Prompts should go in the minibuffer, not in a GUI.
-   use-dialog-box nil
-   ;; Fix undo in commands affecting the mark.
-   mark-even-if-inactive nil
-   ;; Let C-k delete the whole line.
-   kill-whole-line t
-   ;; search should be case-sensitive by default
-   case-fold-search nil
-   ;; no need to prompt for the read command _every_ time
-   compilation-read-command nil
-   ;; always scroll
-   compilation-scroll-output t
-   ;; my source directory
+   inhibit-startup-screen    t           ;; No need to see GNU agitprop.
+   initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
+   ring-bell-function        'ignore     ;; Never ding at me, ever.
+   use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
+   mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
+   kill-whole-line           t           ;; Let C-k delete the whole line.
+   
+   case-fold-search          nil         ;; search should be case-sensitive by default
+   compilation-read-command  nil         ;; no need to prompt for the read command _every_ time
+   compilation-scroll-output t           ;; always scroll
    default-directory "~/"
+   doom-theme 'wheatgrass
    )
 
 (delete-selection-mode t)
 (global-display-line-numbers-mode t)
 (column-number-mode)
 
-(setq doom-theme 'wheatgrass)
+
+
+;; KEY BINDINGS
+
+;; 
+;; Remove the original navigational key bindings
+;; - they don't make any sense if you have a keyboard with arrows
+;; - they free many precious "modifier + single key" combinations
+;;
+(global-unset-key (kbd "C-f")) ;; move forward    one character - just use arrow key
+(global-unset-key (kbd "C-b")) ;; move backward   one character - just use arrow key
+(global-unset-key (kbd "C-p")) ;; move up         one line      - just use arrow key
+(global-unset-key (kbd "C-n")) ;; move down       one line      - just use arrow key
+(global-unset-key (kbd "C-v")) ;; C-v scroll down one page      - just use the PageDown key
+(global-unset-key (kbd "M-v")) ;; M-v scroll up   one page      - just use the PageUp   key 
+(global-unset-key (kbd "M-f")) ;; move forward    one word      - just use M-arrow key
+(global-unset-key (kbd "M-b")) ;; move backward   one word      - just use M-arrow key
+
+
+;; Remove the stupidest and most annoying key binding in the history of computing
+;; - I can't imagine anybody ever needing this feature in 2021
+(global-unset-key (kbd "C-z")) ;; suspend-frame 
+
+;; Remove bindings that I personally never found useful
+(global-unset-key (kbd "C-t")) ;; transpose characters
+(global-unset-key (kbd "M-t")) ;; transpose words
+(global-unset-key (kbd "M-o")) ;; M-o facemenu-mode
+
+;; END KEY BINDINGS
+
+
+
+
+
+
 
 (use-package which-key
   :custom
@@ -49,20 +76,19 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
-
 ;; USER LOOKUP UTILITIES
 ;; (intended to check user mentions in bitbucket markdown documents as you type them)
 ;; ... unfinished
-(defun scarpaz/lookup-user ()
-  "Interpret the current word as a username (ignoring any @ prefixes) and finger that user."
+
+(defun scarpaz/lookup-user-command ()
+  "Interactive command - interpret the current word as a username (ignoring any @ prefixes) and finger that user. You can bind this function to a key."
   (interactive)
   (let ((username (replace-regexp-in-string "@" "" (thing-at-point 'word) )))
     (message "%s = %s" username
-	     (shell-command-to-string (format "finger %s" username)
-	   ))))
+	     (shell-command-to-string (format "finger %s" username)) )))
 
-
-;; hook a finger lookup to every word starting with '@'
+;; edit hook
+;; performs an OS "finger" lookup every time you edit a word that starts with '@'
 (defun scarpaz/lookup-if-user (begin end length)
   "If current word starts with @, look it up as a user."
   (interactive)
@@ -71,9 +97,22 @@
 	 )
     (when (and (eq ?@ beforeword) (> (length username) 2)) 
       (message "%s = %s" username
-	       (shell-command-to-string (format "finger %s" username)
-					)))))
-(add-hook 'after-change-functions 'scarpaz/lookup-if-user nil t)
+	       (shell-command-to-string (format "finger %s" username)) ))))
+
+;; major mode change hook
+;; installs the edit hook just above ONLY if the buffer enters markdown-mode
+(defun scarpaz/mode-change-hook (&rest args)
+  "Major mode changes are a convenient place to install local hooks. If we are in markdown mode, interactively finger user mentions."
+  (interactive)
+  (message "buffer %s - %s" buffer-file-name major-mode)
+  (when (eq major-mode 'markdown-mode)
+    (add-hook 'after-change-functions 'scarpaz/lookup-if-user nil t)
+    (message "Installed user lookup hook to buffer %s - %s" buffer-file-name major-mode)
+    )
+  )
+
+(add-hook 'after-change-major-mode-hook 'scarpaz/mode-change-hook nil nil)
+;; END - USER LOOKUP UTILITIES
 
 
 ;; SAVE-TIME TWEAKS
