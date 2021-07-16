@@ -12,6 +12,7 @@
 
 (load "~/.emacs.d/scarpaz-user-lookup.el")
 (load "~/.emacs.d/scarpaz-key-bindings.el")
+(load "~/.emacs.d/scarpaz-battlecruiser.el")
 
 (setq
    custom-safe-themes        t
