@@ -2,11 +2,11 @@ dot-emacs
 =========
 
 This project is a semi-systematic attempt to modernize and clean up portions of my emacs startup
-files that I have accumulated over years and years of work.
+files that I have accumulated over the years.
 
 The individual files should be reasonably well commented with design notes.
 
-The fundamental philosophy of my choices are as follows:
+The fundamental philosophy of my choices are as follows.
 
 
 Key Bindings
