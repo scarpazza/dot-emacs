@@ -49,5 +49,6 @@ My philosophy is to change only I use most frequently, while leaving most origin
   75% and 65% models that
   [r/MechanicalKeyboards](https://www.reddit.com/r/MechanicalKeyboards/) people love, 
   it hardly makes sense to keep these bindings in place. I reclaim them.
+  In the specific case of `C-v`, I go back to CUA land, making it another paste (`yank`).
 
 * [More to come.]
