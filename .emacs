@@ -10,6 +10,8 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
+(load "~/.emacs.d/scarpaz-user-lookup.el")
+(load "~/.emacs.d/scarpaz-key-bindings.el")
 
 (setq
    custom-safe-themes        t
@@ -20,53 +22,20 @@
    use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
    mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
    kill-whole-line           t           ;; Let C-k delete the whole line.
-   
+
    case-fold-search          nil         ;; search should be case-sensitive by default
    compilation-read-command  nil         ;; no need to prompt for the read command _every_ time
    compilation-scroll-output t           ;; always scroll
-   default-directory "~/"
-   doom-theme 'wheatgrass
+   default-directory         "~/"
+   doom-theme                'wheatgrass
+   require-final-newline     t
+   show-trailing-whitespace  t
+   magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
    )
 
 (delete-selection-mode t)
 (global-display-line-numbers-mode t)
 (column-number-mode)
-
-
-
-;; KEY BINDINGS
-
-;; 
-;; Remove the original navigational key bindings
-;; - they don't make any sense if you have a keyboard with arrows
-;; - they free many precious "modifier + single key" combinations
-;;
-(global-unset-key (kbd "C-f")) ;; move forward    one character - just use arrow key
-(global-unset-key (kbd "C-b")) ;; move backward   one character - just use arrow key
-(global-unset-key (kbd "C-p")) ;; move up         one line      - just use arrow key
-(global-unset-key (kbd "C-n")) ;; move down       one line      - just use arrow key
-(global-unset-key (kbd "C-v")) ;; C-v scroll down one page      - just use the PageDown key
-(global-unset-key (kbd "M-v")) ;; M-v scroll up   one page      - just use the PageUp   key 
-(global-unset-key (kbd "M-f")) ;; move forward    one word      - just use M-arrow key
-(global-unset-key (kbd "M-b")) ;; move backward   one word      - just use M-arrow key
-
-
-;; Remove the stupidest and most annoying key binding in the history of computing
-;; - I can't imagine anybody ever needing this feature in 2021
-(global-unset-key (kbd "C-z")) ;; suspend-frame 
-
-;; Remove bindings that I personally never found useful
-(global-unset-key (kbd "C-t")) ;; transpose characters
-(global-unset-key (kbd "M-t")) ;; transpose words
-(global-unset-key (kbd "M-o")) ;; M-o facemenu-mode
-
-;; END KEY BINDINGS
-
-
-
-
-
-
 
 (use-package which-key
   :custom
@@ -76,48 +45,10 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
-;; USER LOOKUP UTILITIES
-;; (intended to check user mentions in bitbucket markdown documents as you type them)
-;; ... unfinished
-
-(defun scarpaz/lookup-user-command ()
-  "Interactive command - interpret the current word as a username (ignoring any @ prefixes) and finger that user. You can bind this function to a key."
-  (interactive)
-  (let ((username (replace-regexp-in-string "@" "" (thing-at-point 'word) )))
-    (message "%s = %s" username
-	     (shell-command-to-string (format "finger %s" username)) )))
-
-;; edit hook
-;; performs an OS "finger" lookup every time you edit a word that starts with '@'
-(defun scarpaz/lookup-if-user (begin end length)
-  "If current word starts with @, look it up as a user."
-  (interactive)
-  (let ( ( username   (thing-at-point 'word))
-	 ( beforeword (char-before (car (bounds-of-thing-at-point 'word ))))
-	 )
-    (when (and (eq ?@ beforeword) (> (length username) 2)) 
-      (message "%s = %s" username
-	       (shell-command-to-string (format "finger %s" username)) ))))
-
-;; major mode change hook
-;; installs the edit hook just above ONLY if the buffer enters markdown-mode
-(defun scarpaz/mode-change-hook (&rest args)
-  "Major mode changes are a convenient place to install local hooks. If we are in markdown mode, interactively finger user mentions."
-  (interactive)
-  (message "buffer %s - %s" buffer-file-name major-mode)
-  (when (eq major-mode 'markdown-mode)
-    (add-hook 'after-change-functions 'scarpaz/lookup-if-user nil t)
-    (message "Installed user lookup hook to buffer %s - %s" buffer-file-name major-mode)
-    )
-  )
-
-(add-hook 'after-change-major-mode-hook 'scarpaz/mode-change-hook nil nil)
-;; END - USER LOOKUP UTILITIES
-
 
 ;; SAVE-TIME TWEAKS
 ;;
-;; When I'm working on text (fundamental mode or markdown) 
+;; When I'm working on text (fundamental mode or markdown)
 ;; I want flyspell squiggles to come up every time I save.
 ;; All I need to do to see the squiggles is save the file.
 ;; If the squiggles bother me, all I need to do to make them disappear is to attempt to save an unmodified (just saved) file.
@@ -128,32 +59,21 @@
 (defun scarpaz-flyspell-before-saving ()
   (when (memq major-mode '(fundamental-mode markdown-mode)) (flyspell-buffer)))
 
-(defun scarpaz-save-buffer (&optional arg) (interactive) 
-  (if (buffer-modified-p) (save-buffer arg) (flyspell-mode 0)) ) 
+(defun scarpaz-save-buffer (&optional arg) (interactive)
+  (if (buffer-modified-p) (save-buffer arg) (flyspell-mode 0)) )
 
 (add-hook 'before-save-hook #'scarpaz-flyspell-before-saving)
 
 (global-set-key [f2] 'scarpaz-save-buffer)             ; F2 is safe, like in Wolfenstein 3D
-(global-set-key (kbd "C-x C-s") 'scarpaz-save-buffer ) ; remap save-buffer keybinding to my custom save
-(global-set-key (kbd "C-<f2>" ) 'scarpaz-flyspell-off) ; ^F2 forces flyspell off. 
+(global-set-key (kbd "C-<f2>" ) 'scarpaz-flyspell-off) ; ^F2 forces flyspell off.
 
 ;; END OF SAVE-TIME TWEAKS
 ;;
-
-(global-set-key [f8] 'kill-buffer)  # F8 is kill buffer, like "delete" in Norton Commander
-
 
 ;; Never mix tabs and spaces. Never use tabs, period.
 ;; We need the setq-default here because this becomes
 ;; a buffer-local variable when set.
 (setq-default indent-tabs-mode nil)
-
-(global-unset-key (kbd "C-z")) ;; suspend-frame
-(global-unset-key (kbd "M-o")) ;; facemenu-mode
-
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-(setq require-final-newline t)
 
 (require 'hl-line)
 (add-hook 'prog-mode-hook #'hl-line-mode)
@@ -214,3 +134,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
