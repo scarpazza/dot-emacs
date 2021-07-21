@@ -1,9 +1,5 @@
 ; most material shamelessly stolen from https://github.com/patrickt/emacs
 
-(setq lexical-binding t)
-(setq gc-cons-threshold 10000000)
-
-(show-paren-mode 1)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -13,30 +9,11 @@
 (load "~/.emacs.d/scarpaz-user-lookup.el")
 (load "~/.emacs.d/scarpaz-key-bindings.el")
 (load "~/.emacs.d/scarpaz-battlecruiser.el")
+(load "~/.emacs.d/scarpaz-edit-prefs.el")
+(load "~/.emacs.d/scarpaz-save-hooks.el")
 
-(setq
-   custom-safe-themes        t
-   use-package-always-ensure t
-   inhibit-startup-screen    t           ;; No need to see GNU agitprop.
-   initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
-   ring-bell-function        'ignore     ;; Never ding at me, ever.
-   use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
-   mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
-   kill-whole-line           t           ;; Let C-k delete the whole line.
 
-   case-fold-search          nil         ;; search should be case-sensitive by default
-   compilation-read-command  nil         ;; no need to prompt for the read command _every_ time
-   compilation-scroll-output t           ;; always scroll
-   default-directory         "~/"
-   doom-theme                'wheatgrass
-   require-final-newline     t
-   show-trailing-whitespace  t
-   magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
-   )
 
-(delete-selection-mode t)
-(global-display-line-numbers-mode t)
-(column-number-mode)
 
 (use-package which-key
   :custom
@@ -47,29 +24,7 @@
   (which-key-setup-minibuffer))
 
 
-;; SAVE-TIME TWEAKS
-;;
-;; When I'm working on text (fundamental mode or markdown)
-;; I want flyspell squiggles to come up every time I save.
-;; All I need to do to see the squiggles is save the file.
-;; If the squiggles bother me, all I need to do to make them disappear is to attempt to save an unmodified (just saved) file.
-;;
 
-(defun scarpaz-flyspell-off () (interactive) (flyspell-mode 0))
-
-(defun scarpaz-flyspell-before-saving ()
-  (when (memq major-mode '(fundamental-mode markdown-mode)) (flyspell-buffer)))
-
-(defun scarpaz-save-buffer (&optional arg) (interactive)
-  (if (buffer-modified-p) (save-buffer arg) (flyspell-mode 0)) )
-
-(add-hook 'before-save-hook #'scarpaz-flyspell-before-saving)
-
-(global-set-key [f2] 'scarpaz-save-buffer)             ; F2 is safe, like in Wolfenstein 3D
-(global-set-key (kbd "C-<f2>" ) 'scarpaz-flyspell-off) ; ^F2 forces flyspell off.
-
-;; END OF SAVE-TIME TWEAKS
-;;
 
 ;; Never mix tabs and spaces. Never use tabs, period.
 ;; We need the setq-default here because this becomes
@@ -81,11 +36,6 @@
 (add-hook 'text-mode-hook #'hl-line-mode)
 (set-face-attribute 'hl-line nil :background "gray21")
 
-(when (window-system)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
-
 (use-package doom-themes
   :config
   (let ((chosen-theme 'wheatgrass))
@@ -95,7 +45,6 @@
           doom-challenger-deep-brighter-modeline t)
     (load-theme chosen-theme)))
 
-(electric-pair-mode)
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
