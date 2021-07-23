@@ -41,6 +41,11 @@
   "Kill current buffer, even if modified, and close its window. Don't ask anything."
   (interactive) (set-buffer-modified-p nil) (kill-this-buffer) (delete-window) )
 
+(defun scarpaz/toggle-line-spacing ()
+  "Toggle line spacing between zero and 25%"
+  (interactive)
+  (if line-spacing (setq line-spacing nil) (setq line-spacing 0.25))
+  (redraw-frame (selected-frame)))
 
 
 ;; BEGIN establish my preferred key bindings
@@ -54,6 +59,8 @@
 (global-set-key (kbd "M-o")     'toggle-truncate-lines) ;;
 (global-set-key (kbd "M-b")     'minimap-mode) ;;
 
+(global-set-key (kbd "C-f")     'scarpaz/toggle-line-spacing) ;;
+
 (global-set-key (kbd "C-<f1>" )  'delete-other-windows)
 
 (global-set-key (kbd "<f3>" )   'find-file)                   ;; Open, like F3  is "load game" in Wolfenstein 3D
@@ -61,20 +68,17 @@
 
 (global-set-key (kbd "<f4>" )   'read-only-mode)              ;; toggle read only mode, like F4 is "edit" in Norton Commander
 (global-set-key (kbd "<f5>" )   'revert-buffer)               ;; like "refresh page" in any web browser
+(global-set-key (kbd "<f6>")    'magit-status)                ;; Memory aid: F6 is move/rename in NC. Think "move to repo
 
 
 (global-set-key (kbd "<f7>" )   'flyspell-buffer)                  ;; In Microsoft Office, F7 traditionally starts the spell checker 
 (global-set-key (kbd "C-<f7>" ) 'flyspell-correct-word-before-point) ;; 
 
-
 (global-set-key (kbd "<f8>" )   'kill-this-buffer)            ;; F8 is "delete" in Midnight Commander
 (global-set-key (kbd "C-<f8>")  'delete-window)               ;; C-F8 is a stronger version of F8
 
-
 (global-set-key (kbd "<f9>" )   'delete-trailing-whitespace)  ;;
-(global-set-key (kbd "<f10>")   'magit-status)                ;;
 (global-set-key (kbd "<f12>")   'other-window)                ;;
-
 
 
 (global-set-key (kbd "M-+")    'magit-stage-file)        ;; "Alt +" stages the file on which you are working

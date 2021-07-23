@@ -69,21 +69,25 @@
 (global-set-key (kbd "C-, e" )  'scarpaz/unassigned)
 
 ;; F18
-(global-set-key (kbd "C-, f" )  'scarpaz/unassigned)
+(global-set-key (kbd "C-, f" )  'eshell)                    ;;
+(global-set-key (kbd "C-<f6>" ) 'eshell)                    ;; ^F6 duplicates F18
+
 
 ;; F19
 (global-set-key (kbd "C-, g" )  'scarpaz/unassigned)
 
 ;; F20
-(global-set-key (kbd "C-, h" )  'scarpaz/unassigned)
+(global-set-key (kbd "C-, h" )  'delete-window)
+(global-set-key (kbd "C-<f8>")  'delete-window)             ;; ^F8 duplicates F20
+
 
 ;; F21
-(global-set-key (kbd "C-, i" )  'previous-buffer)          ;; memory aid - on the M122, the F9 key says "Prev" on its root
-(global-set-key (kbd "C-<f9>")  'previous-buffer)          ;; ^F9 duplicates F21
+(global-set-key (kbd "C-, i" )  'previous-buffer)           ;; memory aid - on the M122, the F9 key says "Prev" on its root
+(global-set-key (kbd "C-<f9>")  'previous-buffer)           ;; ^F9 duplicates F21
 
 ;; F22
-(global-set-key (kbd "C-, j" )  'next-buffer)              ;; memory aid - on the M122, the F10 key says "Next" on its root
-(global-set-key (kbd "C-<f10>") 'next-buffer)              ;; ^F10 duplicates F22
+(global-set-key (kbd "C-, j" )  'next-buffer)               ;; memory aid - on the M122, the F10 key says "Next" on its root
+(global-set-key (kbd "C-<f10>") 'next-buffer)               ;; ^F10 duplicates F22
 
 ;; F23
 (global-set-key (kbd "C-, k" )  'eshell)                    ;; memory aid... none
