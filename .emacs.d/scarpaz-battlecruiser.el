@@ -29,7 +29,7 @@
 
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
-(global-set-key (kbd "C-, 0" )  'scarpaz/unassigned)     ;; Keypad rightmost column, second row 
+(global-set-key (kbd "C-, 0" )  'scarpaz/unassigned)     ;; Keypad rightmost column, second row
 
 
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
@@ -46,8 +46,8 @@
 (global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)        ;; EXTRA_F9
 
 ;; "Rule" key, i.e., the key in the middle of the arrow keys
-(global-set-key (kbd "C-, 9" )  'er/expand-region)                   ;; "Rule"       -> expand region 
-(global-set-key (kbd "C-, (" )  'er/contract-region)                 ;; Shift-"RULE" -> contract region 
+(global-set-key (kbd "C-, 0" )  'er/expand-region)                   ;; "Rule"       -> expand region
+(global-set-key (kbd "C-< 0" )  'er/contract-region)                 ;; Shift-"RULE" -> contract region
 
 
 ;; F13
@@ -58,8 +58,8 @@
 (global-set-key (kbd "C-, b" )  'magit-stage-file)       ;; memory aid: it's a stronger save and is on top of F2 (save)
 (global-set-key (kbd "C-<f2>")  'magit-stage-file)       ;; ^F2 duplicates F14
 
-;; F15 
-(global-set-key (kbd "C-, c" )  'scarpaz/unassigned)     
+;; F15
+(global-set-key (kbd "C-, c" )  'scarpaz/unassigned)
 
 ;; F16
 (global-set-key (kbd "C-, d" )  'magit-diff-buffer-file) ;; memory aid "show me the edits" is right above F4 (toggle edit)
@@ -75,7 +75,7 @@
 (global-set-key (kbd "C-, g" )  'scarpaz/unassigned)
 
 ;; F20
-(global-set-key (kbd "C-, h" )  'scarpaz/unassigned)     
+(global-set-key (kbd "C-, h" )  'scarpaz/unassigned)
 
 ;; F21
 (global-set-key (kbd "C-, i" )  'previous-buffer)          ;; memory aid - on the M122, the F9 key says "Prev" on its root
@@ -92,7 +92,3 @@
 ;; F24
 (global-set-key (kbd "C-, l" )  'scarpaz/transpose-windows) ;; memory aid: on top of F12 that does "other window"
 (global-set-key (kbd "C-<f12>") 'scarpaz/transpose-windows) ;; ^F12 duplicates F24
-
-
-
-
