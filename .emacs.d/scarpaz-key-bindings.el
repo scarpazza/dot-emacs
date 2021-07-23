@@ -62,13 +62,20 @@
 (global-set-key (kbd "<f4>" )   'read-only-mode)              ;; toggle read only mode, like F4 is "edit" in Norton Commander
 (global-set-key (kbd "<f5>" )   'revert-buffer)               ;; like "refresh page" in any web browser
 
-(global-set-key (kbd "<f8>" )   'scarpaz/kill-buffer-window)          ;; F8 is "delete" in Midnight Commander
-(global-set-key (kbd "C-<f8>")  'scarpaz/violent-kill-buffer-window)  ;; C-F8 is a stronger version of F8
+
+(global-set-key (kbd "<f7>" )   'flyspell-buffer)                  ;; In Microsoft Office, F7 traditionally starts the spell checker 
+(global-set-key (kbd "C-<f7>" ) 'flyspell-correct-word-before-point) ;; 
+
+
+(global-set-key (kbd "<f8>" )   'kill-this-buffer)            ;; F8 is "delete" in Midnight Commander
+(global-set-key (kbd "C-<f8>")  'delete-window)               ;; C-F8 is a stronger version of F8
+
 
 (global-set-key (kbd "<f9>" )   'delete-trailing-whitespace)  ;;
-(global-set-key (kbd "<f12>")   'other-window)                ;;
 (global-set-key (kbd "<f10>")   'magit-status)                ;;
-(global-set-key (kbd "C-<f10>") 'eshell)                      ;;
+(global-set-key (kbd "<f12>")   'other-window)                ;;
+
+
 
 (global-set-key (kbd "M-+")    'magit-stage-file)        ;; "Alt +" stages the file on which you are working
 (global-set-key (kbd "M--")    'magit-unstage-file)      ;; "Alt -" unstages the file on which you are working

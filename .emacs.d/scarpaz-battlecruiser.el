@@ -35,17 +35,19 @@
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
 ;; EXTRA_F10 is not available for binding - I remap it to Hyper/Windows/GUI
 
-(global-set-key (kbd "C-, 1" )  'scarpaz/unassigned)          ;; EXTRA_F2
-(global-set-key (kbd "C-, 2" )  'scarpaz/unassigned)          ;; EXTRA_F3
-(global-set-key (kbd "C-, 3" )  'scarpaz/unassigned)          ;; EXTRA_F4
-(global-set-key (kbd "C-, 4" )  'scarpaz/unassigned)          ;; EXTRA_F5
-(global-set-key (kbd "C-, 5" )  'scarpaz/unassigned)          ;; EXTRA_F6
+(global-set-key (kbd "C-, 1" )  'scarpaz/unassigned)                 ;; EXTRA_F2
+(global-set-key (kbd "C-, 2" )  'flyspell-correct-word-before-point) ;; EXTRA_F3
+(global-set-key (kbd "C-, 3" )  'scarpaz/unassigned)                 ;; EXTRA_F4
+(global-set-key (kbd "C-, 4" )  'scarpaz/unassigned)                 ;; EXTRA_F5
+(global-set-key (kbd "C-, 5" )  'scarpaz/unassigned)                 ;; EXTRA_F6
 
-(global-set-key (kbd "C-, 6" )  'comment-region)              ;; EXTRA_F7
-(global-set-key (kbd "C-, 7" )  'uncomment-region)            ;; EXTRA_F8
-(global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing) ;; EXTRA_F9
+(global-set-key (kbd "C-, 6" )  'comment-region)                     ;; EXTRA_F7
+(global-set-key (kbd "C-, 7" )  'uncomment-region)                   ;; EXTRA_F8
+(global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)        ;; EXTRA_F9
 
-(global-set-key (kbd "C-, 9" )  'scarpaz/unassigned)     ;; "RULE" key, in the middle of 
+;; "Rule" key, i.e., the key in the middle of the arrow keys
+(global-set-key (kbd "C-, 9" )  'er/expand-region)                   ;; "Rule"       -> expand region 
+(global-set-key (kbd "C-, (" )  'er/contract-region)                 ;; Shift-"RULE" -> contract region 
 
 
 ;; F13
@@ -57,27 +59,35 @@
 (global-set-key (kbd "C-<f2>")  'magit-stage-file)       ;; ^F2 duplicates F14
 
 ;; F15 
-(global-set-key (kbd "C-, c" )  'scarpaz/unassigned)     ;; F15
+(global-set-key (kbd "C-, c" )  'scarpaz/unassigned)     
 
 ;; F16
 (global-set-key (kbd "C-, d" )  'magit-diff-buffer-file) ;; memory aid "show me the edits" is right above F4 (toggle edit)
 (global-set-key (kbd "C-<f4>")  'magit-diff-buffer-file) ;; ^F4 duplicates F16
 
-(global-set-key (kbd "C-, e" )  'scarpaz/unassigned)     ;; F17
-(global-set-key (kbd "C-, f" )  'scarpaz/unassigned)     ;; F18
-(global-set-key (kbd "C-, g" )  'scarpaz/unassigned)     ;; F19
-(global-set-key (kbd "C-, h" )  'scarpaz/unassigned)     ;; F20
+;; F17
+(global-set-key (kbd "C-, e" )  'scarpaz/unassigned)
+
+;; F18
+(global-set-key (kbd "C-, f" )  'scarpaz/unassigned)
+
+;; F19
+(global-set-key (kbd "C-, g" )  'scarpaz/unassigned)
+
+;; F20
+(global-set-key (kbd "C-, h" )  'scarpaz/unassigned)     
 
 ;; F21
-(global-set-key (kbd "C-, i" )  'previous-buffer)        ;; memory aid - on the M122, the F9 key says "Prev" on its root
-(global-set-key (kbd "C-<f9>")  'previous-buffer)        ;; ^F9 duplicates F21
+(global-set-key (kbd "C-, i" )  'previous-buffer)          ;; memory aid - on the M122, the F9 key says "Prev" on its root
+(global-set-key (kbd "C-<f9>")  'previous-buffer)          ;; ^F9 duplicates F21
 
 ;; F22
-(global-set-key (kbd "C-, j" )  'next-buffer)            ;; memory aid - on the M122, the F10 key says "Next" on its root
-(global-set-key (kbd "C-<f10>") 'next-buffer)            ;; ^F10 duplicates F22
+(global-set-key (kbd "C-, j" )  'next-buffer)              ;; memory aid - on the M122, the F10 key says "Next" on its root
+(global-set-key (kbd "C-<f10>") 'next-buffer)              ;; ^F10 duplicates F22
 
 ;; F23
-(global-set-key (kbd "C-, k" )  'scarpaz/unassigned)     ;; F23
+(global-set-key (kbd "C-, k" )  'eshell)                    ;; memory aid... none
+(global-set-key (kbd "C-<f11>") 'eshell)                    ;; ^F11 duplicates F23
 
 ;; F24
 (global-set-key (kbd "C-, l" )  'scarpaz/transpose-windows) ;; memory aid: on top of F12 that does "other window"
