@@ -17,6 +17,8 @@
 (require 'expand-region)
 
 
+
+
 (use-package which-key
   :custom
   (which-key-setup-side-window-bottom)
@@ -40,7 +42,7 @@
 
 (use-package doom-themes
   :config
-  (let ((chosen-theme 'wheatgrass))
+  (let ((chosen-theme 'doom-peacock))
     (doom-themes-visual-bell-config)
     (doom-themes-org-config)
     (setq doom-challenger-deep-brighter-comments t

@@ -2,6 +2,7 @@
 (delete-selection-mode t)
 (global-display-line-numbers-mode t)
 (electric-pair-mode)
+(helm-mode)
 
 ;;(column-number-mode)
 
@@ -21,7 +22,7 @@
  compilation-read-command  nil         ;; no need to prompt for the read command _every_ times
  compilation-scroll-output t           ;; always scroll
  default-directory         "~/"
- doom-theme                'wheatgrass
+ doom-theme                'doom-peacock
  require-final-newline     t
  show-trailing-whitespace  t
  magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
