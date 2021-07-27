@@ -33,11 +33,7 @@
 (defun scarpaz/mode-change-hook (&rest args)
   "Major mode changes are a convenient place to install local hooks."
   (interactive)
-<<<<<<< HEAD
 ;;  (message "buffer %s - %s" buffer-file-name major-mode)
-=======
-;;(message "buffer %s - %s" buffer-file-name major-mode)
->>>>>>> 614facf043c5aa73bb37117968c6ee48b4d540bd
   (when (eq major-mode 'markdown-mode)
     (add-hook 'after-change-functions 'scarpaz/lookup-if-user nil t)
     (message "Installed user lookup hook to buffer %s - %s" buffer-file-name major-mode)
