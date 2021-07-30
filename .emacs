@@ -2,21 +2,18 @@
 
 
 (require 'package)
+(require 'expand-region)
+
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
-
-
+(load "~/.emacs.d/scarpaz-edit-prefs.el")
+(load "~/.emacs.d/scarpaz-spell-check.el")
 (load "~/.emacs.d/scarpaz-user-lookup.el")
 (load "~/.emacs.d/scarpaz-key-bindings.el")
 (load "~/.emacs.d/scarpaz-battlecruiser.el")
-(load "~/.emacs.d/scarpaz-edit-prefs.el")
 (load "~/.emacs.d/scarpaz-save-hooks.el")
-
-(require 'expand-region)
-
-
 
 
 (use-package which-key
