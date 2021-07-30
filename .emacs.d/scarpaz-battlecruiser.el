@@ -72,14 +72,13 @@
 (global-set-key (kbd "C-, f" )  'eshell)                    ;;
 (global-set-key (kbd "C-<f6>" ) 'eshell)                    ;; ^F6 duplicates F18
 
-
 ;; F19
-(global-set-key (kbd "C-, g" )  'scarpaz/unassigned)
+(global-set-key (kbd "C-, g" )  'flyspell-correct-word-before-point) ;; memory aid: it's just above F7, that does spelling
+(global-set-key (kbd "C-<f7>" ) 'flyspell-correct-word-before-point) ;; ^F7 duplicates F19
 
 ;; F20
-(global-set-key (kbd "C-, h" )  'delete-window)
+(global-set-key (kbd "C-, h" )  'delete-window)             ;; memory aid: it's similar to F8. F8 deletes the buffer. F20 deletes the window.
 (global-set-key (kbd "C-<f8>")  'delete-window)             ;; ^F8 duplicates F20
-
 
 ;; F21
 (global-set-key (kbd "C-, i" )  'previous-buffer)           ;; memory aid - on the M122, the F9 key says "Prev" on its root
