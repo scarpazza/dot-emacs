@@ -21,9 +21,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 2.0))))
- '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.6))))
- '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.3))))
+ '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
+ '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.4))))
+ '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.2))))
  )
 
 
@@ -36,26 +36,6 @@
     (setq doom-challenger-deep-brighter-comments t
           doom-challenger-deep-brighter-modeline t)
     (load-theme chosen-theme)))
-
-
-(use-package doom-modeline
-  :config (doom-modeline-mode))
-
-(use-package magit
-  :diminish magit-auto-revert-mode
-  :diminish auto-revert-mode
-  :bind (("C-c g" . #'magit-status))
-  :custom
-  (magit-repository-directories '(("~/" . 1)))
-  :config
-  (add-to-list 'magit-no-confirm 'stage-all-changes))
-
-
-(use-package all-the-icons)
-
-(use-package all-the-icons-dired
-  :after all-the-icons
-  :hook (dired-mode . all-the-icons-dired-mode))
 
 
 (custom-set-variables

@@ -56,9 +56,29 @@
   :init (setq markdown-command "multimarkdown"))
 
 
+(use-package all-the-icons)
+
+(use-package all-the-icons-dired
+  :after all-the-icons
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+
+(use-package doom-modeline
+  :config (doom-modeline-mode))
+
 (require 'expand-region)
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
+
+(use-package magit
+  :diminish magit-auto-revert-mode
+  :diminish auto-revert-mode
+  :bind (("C-c g" . #'magit-status))
+  :custom
+  (magit-repository-directories '(("~/" . 1)))
+  :config
+  (add-to-list 'magit-no-confirm 'stage-all-changes))
+
 
 
 (require 'hl-line)
