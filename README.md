@@ -25,7 +25,7 @@ To keep emacs's actual startup files synchronized with the repo, it's not a craz
 make them symbolic links, such as:
 
     cd ~/git_sandboxes/dot-emacs/.emacs.d/
-    for f in scarpaz-*.el; do ln -svf $f ~/.emacs.d; done
+    for f in scarpaz-*.el; do ln -svf `pwd`/$f ~/.emacs.d/$f; done
 
 It's not crazy... for me. It might be crazy for you. You do you.
 
