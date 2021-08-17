@@ -11,6 +11,25 @@ They should be commented reasonably well.
 The fundamental philosophy of my choices are as follows.
 
 
+Where to start
+--------------
+
+If you just checked out this project and only see README.md... you are right.
+The meat of the project is in "hidden" files `.emacs` and `.emacs.d`.
+I aim toward a goal state in which my `.emacs` is just a list of loads similar to:
+
+    (load "~/.emacs.d/scarpaz-edit-prefs.el")
+
+and the contents of `.emacs.d` contain the actual settings, grouped together by topic.
+To keep emacs's actual startup files synchronized with the repo, it's not a crazy idea to 
+make them symbolic links, such as:
+
+    cd ~/git_sandboxes/dot-emacs/.emacs.d/
+    for f in scarpaz-*.el; do ln -svf $f ~/.emacs.d; done
+
+It's not crazy... for me. It might be crazy for you. You do you.
+
+
 Key Bindings
 ------------
 
