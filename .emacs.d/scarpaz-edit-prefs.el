@@ -5,6 +5,9 @@
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
 (helm-mode)
 
+;; FAILS under older emacs
+;; (eval-after-load 'helm (lambda () (set-face-attribute 'helm-source-header nil :background "gray30" :font (old-face-attribute))))
+
 ;;(column-number-mode)
 
 

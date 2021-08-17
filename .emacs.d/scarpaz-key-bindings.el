@@ -3,9 +3,6 @@
 (global-set-key (kbd "C-x C-b") 'helm-buffer-list)
 (global-set-key (kbd "M-x")     'helm-M-x)
 
-(eval-after-load 'helm (lambda () (set-face-attribute 'helm-source-header nil :background "gray30" :font (old-face-attribute))))
-
-
 ;; BEGIN key binding cleanup
 ;;
 ;; Remove the original navigational key bindings

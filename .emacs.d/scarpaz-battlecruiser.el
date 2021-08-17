@@ -27,6 +27,15 @@
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
 
+(defun scarpaz/magit-toggle-blame (arg)
+  (interactive "p")
+  (if (bound-and-true-p magit-blame-mode)
+      (magit-blame-quit)
+      (magit-blame-addition nil)
+      )
+  )
+
+
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
 (global-set-key (kbd "C-, 0" )  'scarpaz/unassigned)     ;; Keypad rightmost column, second row
@@ -59,14 +68,17 @@
 (global-set-key (kbd "C-<f2>")  'magit-stage-file)       ;; ^F2 duplicates F14
 
 ;; F15
-(global-set-key (kbd "C-, c" )  'scarpaz/unassigned)
+(global-set-key (kbd "C-, c" )  'magit-file-dispatch)
+(global-set-key (kbd "C-<f3>" ) 'magit-file-dispatch)
 
 ;; F16
 (global-set-key (kbd "C-, d" )  'magit-diff-buffer-file) ;; memory aid "show me the edits" is right above F4 (toggle edit)
 (global-set-key (kbd "C-<f4>")  'magit-diff-buffer-file) ;; ^F4 duplicates F16
 
 ;; F17
-(global-set-key (kbd "C-, e" )  'scarpaz/unassigned)
+(global-set-key (kbd "C-, e" )  'scarpaz/magit-toggle-blame)
+(global-set-key (kbd "C-<f5>" ) 'scarpaz/magit-toggle-blame)
+
 
 ;; F18
 (global-set-key (kbd "C-, f" )  'eshell)                    ;;
@@ -89,8 +101,8 @@
 (global-set-key (kbd "C-<f10>") 'next-buffer)               ;; ^F10 duplicates F22
 
 ;; F23
-(global-set-key (kbd "C-, k" )  'eshell)                    ;; memory aid... none
-(global-set-key (kbd "C-<f11>") 'eshell)                    ;; ^F11 duplicates F23
+(global-set-key (kbd "C-, k" )  'scarpaz/toggle-line-spacing) ;; memory aid - spacing is a focus aid like fullscreen is
+(global-set-key (kbd "C-<f11>") 'scarpaz/toggle-line-spacing) ;; ^F11 duplicates F23
 
 ;; F24
 (global-set-key (kbd "C-, l" )  'scarpaz/transpose-windows) ;; memory aid: on top of F12 that does "other window"
