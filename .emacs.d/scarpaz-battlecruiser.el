@@ -36,9 +36,14 @@
   )
 
 
+
+
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
-(global-set-key (kbd "C-, 0" )  'calculator)             ;; NumKeypad rightmost column, second row
+(global-set-key (kbd "C-, 0" )  'calendar)             ;; NumKeypad rightmost column, second row
+(eval-after-load "calendar"
+  `(progn
+     (define-key calendar-mode-map (kbd "C-, 0") 'calendar-exit)))
 
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
 ;; EXTRA_F10 is not available for binding - I remap it to Hyper/Windows/GUI
