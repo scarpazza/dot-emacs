@@ -1,6 +1,6 @@
 ;; Replace existing features with newer alternatives
 
-(global-set-key (kbd "C-x C-b") 'helm-buffer-list)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "M-x")     'helm-M-x)
 
 ;; BEGIN key binding cleanup
@@ -66,9 +66,6 @@
 (global-set-key (kbd "M-b")     'minimap-mode) ;;
 
 (global-set-key (kbd "C-f")     'scarpaz/toggle-line-spacing) ;;
-
-(global-set-key (kbd "C-<f1>" )  'delete-other-windows)
-
 (global-set-key (kbd "<f3>" )   'find-file)                   ;; Open, like F3  is "load game" in Wolfenstein 3D
 (global-unset-key (kbd "C-x C-f") )                           ;; disable C-x C-f. I want to lose that habit.
 
@@ -90,7 +87,6 @@
 (global-set-key (kbd "M-+")    'magit-stage-file)        ;; "Alt +" stages the file on which you are working
 (global-set-key (kbd "M--")    'magit-unstage-file)      ;; "Alt -" unstages the file on which you are working
 (global-set-key (kbd "M-/")    'eval-last-sexp)          ;; "Alt/" evaluates the elisp expression at the cursor
-
 
 
 ;; Tab completion

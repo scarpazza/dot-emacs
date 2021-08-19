@@ -38,21 +38,19 @@
 
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
-(global-set-key (kbd "C-, 0" )  'scarpaz/unassigned)     ;; Keypad rightmost column, second row
-
+(global-set-key (kbd "C-, 0" )  'calculator)             ;; NumKeypad rightmost column, second row
 
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
 ;; EXTRA_F10 is not available for binding - I remap it to Hyper/Windows/GUI
 
-(global-set-key (kbd "C-, 1" )  'scarpaz/unassigned)                 ;; EXTRA_F2
-(global-set-key (kbd "C-, 2" )  'flyspell-correct-word-before-point) ;; EXTRA_F3
-(global-set-key (kbd "C-, 3" )  'scarpaz/unassigned)                 ;; EXTRA_F4
-(global-set-key (kbd "C-, 4" )  'scarpaz/unassigned)                 ;; EXTRA_F5
-(global-set-key (kbd "C-, 5" )  'scarpaz/unassigned)                 ;; EXTRA_F6
-
-(global-set-key (kbd "C-, 6" )  'comment-region)                     ;; EXTRA_F7
-(global-set-key (kbd "C-, 7" )  'uncomment-region)                   ;; EXTRA_F8
-(global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)        ;; EXTRA_F9
+(global-set-key (kbd "C-, 1" )  'keyboard-escape-quit)           ;; EXTRA_F2
+(global-set-key (kbd "C-, 2" )  'kill-rectangle)                 ;; EXTRA_F3
+(global-set-key (kbd "C-, 3" )  'yank-rectangle)                 ;; EXTRA_F4
+(global-set-key (kbd "C-, 4" )  'comment-region)                 ;; EXTRA_F5
+(global-set-key (kbd "C-, 5" )  'uncomment-region)               ;; EXTRA_F6
+(global-set-key (kbd "C-, 6" )  'display-line-numbers-mode)      ;; EXTRA_F7
+(global-set-key (kbd "C-, 7" )  'scarpaz/unassigned)             ;; EXTRA_F8
+(global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)    ;; EXTRA_F9
 
 ;; "Rule" key, i.e., the key in the middle of the arrow keys
 (global-set-key (kbd "C-, 0" )  'er/expand-region)                   ;; "Rule"       -> expand region
@@ -60,8 +58,8 @@
 
 
 ;; F13
-(global-set-key (kbd "C-, a" )  'delete-other-windows)   ;; "give me one window" - memory aid: it's on top of F1
-(global-set-key (kbd "C-<f1>")  'delete-other-windows)   ;; ^F1 duplicates F13
+(global-set-key (kbd "C-, a" )  'magit-wip-log-current)   ;; "give me one window" - memory aid: it's on top of F1
+(global-set-key (kbd "C-<f1>")  'magit-wip-log-current)   ;; ^F1 duplicates F13
 
 ;; F14
 (global-set-key (kbd "C-, b" )  'magit-stage-file)       ;; memory aid: it's a stronger save and is on top of F2 (save)
@@ -78,7 +76,6 @@
 ;; F17
 (global-set-key (kbd "C-, e" )  'scarpaz/magit-toggle-blame)
 (global-set-key (kbd "C-<f5>" ) 'scarpaz/magit-toggle-blame)
-
 
 ;; F18
 (global-set-key (kbd "C-, f" )  'eshell)                    ;;
@@ -101,8 +98,8 @@
 (global-set-key (kbd "C-<f10>") 'next-buffer)               ;; ^F10 duplicates F22
 
 ;; F23
-(global-set-key (kbd "C-, k" )  'scarpaz/toggle-line-spacing) ;; memory aid - spacing is a focus aid like fullscreen is
-(global-set-key (kbd "C-<f11>") 'scarpaz/toggle-line-spacing) ;; ^F11 duplicates F23
+(global-set-key (kbd "C-, k" )  'delete-other-windows) ;; memory aid - spacing is a focus aid like fullscreen is
+(global-set-key (kbd "C-<f11>") 'delete-other-windows) ;; ^F11 duplicates F23
 
 ;; F24
 (global-set-key (kbd "C-, l" )  'scarpaz/transpose-windows) ;; memory aid: on top of F12 that does "other window"

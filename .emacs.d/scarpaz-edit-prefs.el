@@ -12,37 +12,37 @@
 
 
 (setq
- custom-safe-themes        t
- lexical-binding t
-
- use-package-always-ensure t
- inhibit-startup-screen    t           ;; No need to see GNU agitprop.
- initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
- ring-bell-function        'ignore     ;; Never ding at me, ever.
- use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
- mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
- frame-resize-pixelwise    t
- kill-whole-line           t           ;; Let C-k delete the whole line.
-
  case-fold-search          nil         ;; search should be case-sensitive by default
  compilation-read-command  nil         ;; no need to prompt for the read command _every_ times
  compilation-scroll-output t           ;; always scroll
-
- mouse-drag-copy-region    t           ;; mouse selection copies text to clipboard automatically
- mouse-wheel-scroll-amount '(1 ((shift) . 5)) ;; smooth scrolling by mouse
- mouse-wheel-follow-mouse  t           ;; wheel scrolls the window you are hovering, even if inactive
-
  default-directory         "~/"
  doom-theme                'doom-peacock
- require-final-newline     t
- show-trailing-whitespace  t
- scroll-error-top-bottom   t           ;; allow scrolling to very top/bottom of file
-
- magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
+ frame-resize-pixelwise    t
+ fill-column               120
  gc-cons-threshold         10000000
-
  helm-ff-allow-non-existing-file-at-point t ;; allow entering selections not listed
+ inhibit-startup-screen    t           ;; No need to see GNU agitprop.
+ initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
+ kill-whole-line           t           ;; Let C-k delete the whole line.
+ lexical-binding t
+ magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
+ mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
  markdown-header-scaling   t
+ mouse-drag-copy-region    t           ;; mouse selection copies text to clipboard automatically
+ mouse-wheel-follow-mouse  t           ;; wheel scrolls the window you are hovering, even if inactive
+ mouse-wheel-scroll-amount '(1 ((shift) . 5)) ;; smooth scrolling by mouse
+ require-final-newline     t
+ ring-bell-function        'ignore     ;; Never ding at me, ever.
+ scroll-error-top-bottom   t           ;; allow scrolling to very top/bottom of file
+ show-trailing-whitespace  t
+ use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
+ use-package-always-ensure t
+ custom-safe-themes        t
+ help-window-select        t           ;; Focus new help windows when opened
+ indent-tabs-mode          nil         ;; Do not use tab characters to indent
+ tab-width                 4
+ window-combination-resize t           ;; Resize windows proportionally
+
  )
 
 
@@ -73,6 +73,10 @@
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
 (use-package magit
   :diminish magit-auto-revert-mode
   :diminish auto-revert-mode
@@ -82,7 +86,13 @@
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes))
 
-
+(use-package whitespace
+  :ensure nil
+  :hook
+  (prog-mode . whitespace-mode)
+  (text-mode . whitespace-mode)
+  :custom
+  (whitespace-style '(face empty indentation::space tab trailing)))
 
 (require 'hl-line)
 (add-hook 'prog-mode-hook #'hl-line-mode)
@@ -97,4 +107,3 @@
   :config
   (which-key-mode)
   (which-key-setup-minibuffer))
-
