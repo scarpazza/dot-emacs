@@ -47,9 +47,13 @@
   (interactive) (set-buffer-modified-p nil) (kill-this-buffer) (delete-window) )
 
 (defun scarpaz/toggle-line-spacing ()
-  "Toggle line spacing between zero and 25%"
+  "Cycle line spacing between 0, 25%, 50%"
   (interactive)
-  (if line-spacing (setq line-spacing nil) (setq line-spacing 0.25))
+  (if line-spacing
+      (if (= line-spacing 0.25)
+          (setq line-spacing 0.5)
+          (setq line-spacing nil) )
+    (setq line-spacing 0.25))
   (redraw-frame (selected-frame)))
 
 
