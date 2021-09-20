@@ -6,6 +6,11 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
+;; customization
+;; path where you want to have your weekly reports;
+;; - see scarpaz-calendar.el
+(setq scarpaz/weeklies_path "~/development/weeklies")
+
 (load "~/.emacs.d/scarpaz-main.el")
 
 

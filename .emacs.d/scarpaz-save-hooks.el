@@ -20,7 +20,7 @@
 
 (add-hook 'before-save-hook #'scarpaz-flyspell-before-saving)
 
-(global-set-key [f2] 'scarpaz-save-buffer)             ; F2 is safe, like in Wolfenstein 3D
+(global-set-key [f2] 'scarpaz-save-buffer)             ; F2 is safe, like in most DOS programs
 (global-set-key (kbd "M-<f2>" ) 'scarpaz-flyspell-off) ; Alt-F2 forces flyspell off.
 
 ;; END OF SAVE-TIME TWEAKS
