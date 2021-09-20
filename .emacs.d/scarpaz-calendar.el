@@ -61,6 +61,7 @@
 
 (eval-after-load "calendar"
   `(progn
+     (define-key calendar-mode-map (kbd "+")         'diary-insert-entry)
      (define-key calendar-mode-map (kbd "w")         'scarpaz/open-weekly)
      (define-key calendar-mode-map (kbd "<f5>")      'calendar-redraw)
      (define-key calendar-mode-map (kbd "<return>")  'scarpaz/open-weekly)
