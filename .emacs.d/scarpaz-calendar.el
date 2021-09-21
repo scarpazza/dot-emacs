@@ -15,6 +15,7 @@
 ;; Daniele Scarpazza
 
 
+(require 'calendar)
 (calendar-set-date-style 'iso)
 
 ;; I don't have any Bahai colleagues, so I don't need to see their holidays

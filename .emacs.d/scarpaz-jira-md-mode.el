@@ -52,7 +52,7 @@
          )
     (goto-char initialpt)
     (message "Requesting jira issue %s" issue_no)
-    (org-jira-get-issues issue_no)
+    (org-jira-get-issue issue_no)
     )
  )
 
