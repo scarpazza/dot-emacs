@@ -63,11 +63,12 @@
 
 
 
-(setq jira-md-keywords
-      '(( jira-md/issue-id-regex . font-lock-function-name-face) ;; jira issues
-        ( jira-md/user-id-regex  . font-lock-constant-face)      ;; user mentions
-        ( jira-md/iso-date-regex . font-lock-keyword-face)       ;; dates
-        ( jira-md/us-date-regex  . font-lock-keyword-face)       ;; dates
+(setq jira-md/keywords
+      (list
+        (cons jira-md/issue-id-regex  'font-lock-function-name-face) ;; jira issues
+        (cons jira-md/user-id-regex   'font-lock-constant-face)      ;; user mentions
+        (cons jira-md/iso-date-regex  'font-lock-keyword-face)       ;; dates
+        (cons jira-md/us-date-regex   'font-lock-keyword-face)       ;; dates
         )
       )
 
@@ -79,7 +80,7 @@
             (define-key map (kbd "M-<return>") 'scarpaz/go-jira)
             map)
 
-  (font-lock-add-keywords nil jira-md-keywords)
+  (font-lock-add-keywords nil jira-md/keywords)
 
   (if (fboundp 'font-lock-flush)
       (font-lock-flush)
@@ -92,26 +93,48 @@
   )
 
 
-;; rewrite me with thing-at-point 'symbole
 (defun scarpaz/go-jira ()
   (interactive)
   (let* (
          (initialpt (point))
-         (ignore    (skip-chars-backward "A-Za-z0-9_-"))
+         (ignore    (skip-chars-backward "A-Za-z0-9_/-"))
          (start     (point))
-         (ignore    (skip-chars-forward "A-Za-z0-9_-"))
+         (ignore    (skip-chars-forward "A-Za-z0-9_/-"))
          (end       (point))
          (token     (buffer-substring-no-properties start end))
          )
     (goto-char initialpt)
+    (message "token %s" token)
     (cond
-     ;; matches Jira issue IDs
-     (
-      (string-match-all jira-md/issue-id-regex token) (org-jira-get-issue token)
-      )
+     ( (string-match-all jira-md/issue-id-regex token) (org-jira-get-issue token) )
+     ( (string-match-all jira-md/iso-date-regex token) (scarpaz/go-to-date token) )
+     ( (string-match-all jira-md/us-date-regex token) (scarpaz/go-to-date token) )
      )
-    ))
+    )
+  )
 
+(defun scarpaz/go-to-date (token)
+  (if (string-match-all jira-md/iso-date-regex token)
+      (let* (
+             (parsed (mapcar 'string-to-number (split-string token "[-/]")))
+             (month (nth 1 parsed))
+             (day   (nth 2 parsed))
+             (year  (nth 0 parsed))
+             )
+        (calendar)
+        (calendar-goto-date (list month day year))))
+  (if (string-match-all jira-md/us-date-regex token)
+      (let* (
+             (parsed (mapcar 'string-to-number (split-string token "[-/]")))
+             (month (nth 0 parsed))
+             (day   (nth 1 parsed))
+             (year  (nth 2 parsed))
+             )
+        (calendar)
+        (calendar-goto-date (list month day year))))
+  )
+
+  
 
 (defun scarpaz/display-user-mention (username beg end)
   (setq hashlookup (gethash username scarpaz/user-hash-table))
@@ -124,6 +147,11 @@
       (message "+%s" (gethash username scarpaz/user-hash-table))))
 )
 
+
+
+(defun string-match-all (pattern string)
+  (and (eq 0 (string-match pattern string))
+       (eq (length string) (match-end 0) )))
 
 (defun scarpaz/cursor-hook ()
   (interactive)
@@ -138,7 +166,16 @@
           (when (char-equal ?@ (char-before beg))
             (setq str (buffer-substring-no-properties beg end))
             (scarpaz/display-user-mention str beg end)
-            ))))
+            ))
+        
+        (setq str (buffer-substring-no-properties beg end))
+        (when (string-match-all jira-md/iso-date-regex str)
+          (message "go to date: %s" str))
+        (when (string-match-all jira-md/us-date-regex str)
+          (message "go to date: %s" str))
+
+        )
+      )
 ))
 
 (add-hook 'post-command-hook 'scarpaz/cursor-hook)

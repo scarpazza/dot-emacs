@@ -16,10 +16,6 @@
 (require 'cl-lib)
 
 
-(defun string-match-all (pattern string)
-  (and (eq 0 (string-match pattern string))
-       (eq (length string) (match-end 0) )))
-
 (defun jira-md/tests ()
   (cl-assert (string-match-all jira-md/issue-id-regex "ABC-1"))
   (cl-assert (string-match-all jira-md/issue-id-regex "PROJECT9-123"))
