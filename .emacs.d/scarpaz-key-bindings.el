@@ -1,7 +1,21 @@
-;; Replace existing features with newer alternatives
+;; I love helm. Not everybody does. In fact, people are usually very polarized about helm.
+;; I customized my key bindings around it quite a bit.
+;;
+;; The great tutorial that inspired most of my choices is:
+;; https://tuhdo.github.io/helm-intro.html
+;;
+;;
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; Replace existing features with more advanced, helm-based alternatives
+
+(require 'helm)
+(require 'helm-config)
+
+(global-set-key (kbd "C-x b")   'helm-mini)
+(global-set-key (kbd "C-x C-b") 'helm-mini)
 (global-set-key (kbd "M-x")     'helm-M-x)
+(global-set-key (kbd "M-y")     'helm-show-kill-ring) 
+
 
 ;; BEGIN key binding cleanup
 ;;
@@ -47,7 +61,8 @@
   (interactive) (set-buffer-modified-p nil) (kill-this-buffer) (delete-window) )
 
 (defun scarpaz/toggle-line-spacing ()
-  "Cycle line spacing between 0, 25%, 50%"
+  "Cycle line spacing between 0, 25%, 50%;
+   On the M122 keyboard, I even have a dedicated key for this, with a 'Line Space' keycap taken from an old IBM Wheelwriter typewriter"
   (interactive)
   (if line-spacing
       (if (= line-spacing 0.25)
@@ -65,12 +80,15 @@
 (global-set-key (kbd "C-z")     'undo) ;; nowadays C-z is commonly undo
 (global-set-key (kbd "C-v")     'yank) ;; nowadays C-v is commonly paste
 
+
+
 (global-set-key (kbd "M-o")     'toggle-truncate-lines) ;;
 
 (global-set-key (kbd "M-b")     'minimap-mode) ;;
 
 (global-set-key (kbd "C-f")     'scarpaz/toggle-line-spacing) ;;
-(global-set-key (kbd "<f3>" )   'find-file)                   ;; Open, like F3  is "load game" in Wolfenstein 3D
+
+(global-set-key (kbd "<f3>" )   'helm-find-files)             ;; Open, like F3  is "load game" in Wolfenstein 3D
 (global-unset-key (kbd "C-x C-f") )                           ;; disable C-x C-f. I want to lose that habit.
 
 (global-set-key (kbd "<f4>" )   'read-only-mode)              ;; toggle read only mode, like F4 is "edit" in Norton Commander
@@ -90,8 +108,16 @@
 
 (global-set-key (kbd "M-+")    'magit-stage-file)        ;; "Alt +" stages the file on which you are working
 (global-set-key (kbd "M--")    'magit-unstage-file)      ;; "Alt -" unstages the file on which you are working
-(global-set-key (kbd "M-/")    'eval-last-sexp)          ;; "Alt/" evaluates the elisp expression at the cursor
 
+(global-set-key (kbd "M-/")           'helm-semantic-or-imenu)  ;; "Alt/" brings up the semantic menu
+(global-set-key (kbd "M-<return>")    'eval-last-sexp)          ;; "Alt-Enter" is my "act on thing under cursor"
+
+
+
+(define-key helm-read-file-map (kbd "<left>") 'backward-char)
+(define-key helm-read-file-map (kbd "<right>") 'forward-char)
+(define-key helm-find-files-map (kbd "<left>") 'backward-char)
+(define-key helm-find-files-map (kbd "<right>") 'forward-char)
 
 ;; Tab completion
 ;; https://www.emacswiki.org/emacs/TabCompletion

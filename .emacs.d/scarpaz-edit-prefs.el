@@ -21,6 +21,7 @@
  fill-column               120
  gc-cons-threshold         10000000
  helm-ff-allow-non-existing-file-at-point t ;; allow entering selections not listed
+ helm-ff-file-name-history-use-recentf t
  inhibit-startup-screen    t           ;; No need to see GNU agitprop.
  initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
  kill-whole-line           t           ;; Let C-k delete the whole line.
@@ -42,7 +43,6 @@
  indent-tabs-mode          nil         ;; Do not use tab characters to indent
  tab-width                 4
  window-combination-resize t           ;; Resize windows proportionally
-
  )
 
 (recentf-mode 1)
