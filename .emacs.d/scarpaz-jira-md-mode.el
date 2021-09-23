@@ -3,41 +3,61 @@
 ;;
 ;; Daniele P. Scarpazza - scarpaz@scarpaz.com
 ;;
-;; This is a minor mode that performs the following:
+;; This is a minor mode intended to make markdown mode editing more
+;; interactive, in manners that are consistent with the markdown dialect
+;; accepted by Atlassian (e.g., Bitbucket extensions).
+;;
+;; Specifically:
+;;
 ;; - it colorizes
 ;;   - user mentions (e.g., @user)
 ;;   - jira issue numbers (e.g., PROJECT-1234)
-;;   - dates, either in ISO or US format (e.g., 2010-12-23 or 1997/12/31)
-;; - it resolves user mentions via "finger" when you type or move your cursor on them;
+;;   - dates in ISO or US format (e.g., 2010-12-23 or 1997/12/31)
+;;
+;; - it resolves user mentions via "finger" when you type
+;;   or move your cursor on them;
 ;;   It uses a hash table to resolve usernames (and substrings) only once.
-;; - it binds "Alt-Enter" to issue lookup via org-jira.
 ;;
-;; I don't recognize European style dates because they can't be distinguished from the
-;; American-style ones just by syntax.
+;; - it displays a transient calendar when the cursor is over a date
 ;;
-;; It's intended to be consistent with markdown rendering performed by Atlassian products like
-;; bitbucket.
+;; - it binds "Alt-Enter" to act on the element under the cursor:
+;;   - for jira tickets,
+;;     it looks the ticket up via org-jira;
+;;   - for dates (ISO or US),
+;;     it opens the calendar on that date.
+;;
+;; It distinguishes between ISO and US dates.  I don't recognize
+;; European-style dates because they can't be distinguished from the
+;; American-style ones just by syntax (the year is at the end in
+;; both). This is no slight against Europe: I'm European by birth and
+;; upbringing, and I prefer the ISO format. In fact, using
+;; international standards is in the true nature of the European
+;; character.
 ;;
 ;; It auto-enables when editing markdown files.
 ;;
-;; All files in this repository are released under the GNU General Public License v3.  To learn
-;; more, see https://www.gnu.org/licenses/gpl-3.0.en.html
+;; The source code contained in this file is released under the GNU
+;; General Public License v3.  To learn more, see
+;; https://www.gnu.org/licenses/gpl-3.0.en.html
 ;;
-
 
 (require 'font-lock)
 (require 'org-jira)
-
 (provide 'jira-md-mode)
 
-
 ;; Customization variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defgroup jira-md nil
   "Atlassian-oriented markdown integration, including user mentions and issue ."
   :prefix "jira-md/"
   :group 'jira-md
   :link "https://github.com/scarpazza/dot-emacs"
   )
+
+(defcustom jira-md/email-regex
+  "\\w+\\(\\.\\w+\\)?@\\(\\w\\|\\.\\)+"
+  "Regular expression determining what tokens are recognized as email addresses. Play with it if you want."
+  :type 'string  :require 'jira-md-mode  :group 'jira-md)
 
 (defcustom jira-md/issue-id-regex
   "[A-Z][A-Z0-9]+-[0-9]+"
@@ -65,6 +85,7 @@
 
 (setq jira-md/keywords
       (list
+        (cons jira-md/email-regex     'font-lock-string-face)          ;; emails
         (cons jira-md/issue-id-regex  'font-lock-function-name-face) ;; jira issues
         (cons jira-md/user-id-regex   'font-lock-constant-face)      ;; user mentions
         (cons jira-md/iso-date-regex  'font-lock-keyword-face)       ;; dates
@@ -108,33 +129,31 @@
     (cond
      ( (string-match-all jira-md/issue-id-regex token) (org-jira-get-issue token) )
      ( (string-match-all jira-md/iso-date-regex token) (scarpaz/go-to-date token) )
-     ( (string-match-all jira-md/us-date-regex token) (scarpaz/go-to-date token) )
+     ( (string-match-all jira-md/us-date-regex token)  (scarpaz/go-to-date token) )
      )
     )
   )
 
-(defun scarpaz/go-to-date (token)
+(defun scarpaz/parse-date-to-calendar-format (token)
+  (setq parsed (mapcar 'string-to-number (split-string token "[-/]")))
   (if (string-match-all jira-md/iso-date-regex token)
-      (let* (
-             (parsed (mapcar 'string-to-number (split-string token "[-/]")))
-             (month (nth 1 parsed))
-             (day   (nth 2 parsed))
-             (year  (nth 0 parsed))
-             )
-        (calendar)
-        (calendar-goto-date (list month day year))))
-  (if (string-match-all jira-md/us-date-regex token)
-      (let* (
-             (parsed (mapcar 'string-to-number (split-string token "[-/]")))
-             (month (nth 0 parsed))
-             (day   (nth 1 parsed))
-             (year  (nth 2 parsed))
-             )
-        (calendar)
-        (calendar-goto-date (list month day year))))
+      (let* ( (month (nth 1 parsed))
+              (day   (nth 2 parsed))
+              (year  (nth 0 parsed)) )
+        (list month day year)
+        )
+    (if (string-match-all jira-md/us-date-regex token)
+      (let* ( (month (nth 0 parsed))
+              (day   (nth 1 parsed))
+              (year  (nth 2 parsed)) )
+        (list month day year)))
+    )
   )
 
-  
+
+(defun scarpaz/go-to-date (token)
+  (calendar)
+  (calendar-goto-date (scarpaz/parse-date-to-calendar-format token)))
 
 (defun scarpaz/display-user-mention (username beg end)
   (setq hashlookup (gethash username scarpaz/user-hash-table))
@@ -148,38 +167,40 @@
 )
 
 
-
 (defun string-match-all (pattern string)
   (and (eq 0 (string-match pattern string))
        (eq (length string) (match-end 0) )))
 
 (defun scarpaz/cursor-hook ()
   (interactive)
-  (let* (
-         ( bounds (bounds-of-thing-at-point 'symbol) )
-         ( beg    (car bounds))
-         ( end    (cdr bounds))
-         )
-    (progn
-      (when beg
+  (let* ( ( bounds (bounds-of-thing-at-point 'symbol) )
+          ( beg    (car bounds))
+          ( end    (cdr bounds)) )
+    (when beg
         (when (char-before beg)
           (when (char-equal ?@ (char-before beg))
             (setq str (buffer-substring-no-properties beg end))
             (scarpaz/display-user-mention str beg end)
-            ))
-        
-        (setq str (buffer-substring-no-properties beg end))
-        (when (string-match-all jira-md/iso-date-regex str)
-          (message "go to date: %s" str))
-        (when (string-match-all jira-md/us-date-regex str)
-          (message "go to date: %s" str))
+            )
+          (setq str (buffer-substring-no-properties beg end))
+          (setq date nil)
 
+          (when (or (string-match-all jira-md/iso-date-regex str)
+                    (string-match-all jira-md/us-date-regex str) )
+            (setq date (scarpaz/parse-date-to-calendar-format str))
+            (print date)
+            (setq buf (get-buffer-create "*temp calendar buffer*"))
+            (switch-to-buffer buf)
+            (calendar-generate-month (car date) (nth 2 date) 6)
+
+            (setq alcal (buffer-string))
+            (kill-buffer buf)
+            (message alcal)
+            )
         )
-      )
-))
+)))
 
 (add-hook 'post-command-hook 'scarpaz/cursor-hook)
 
 ;;;###autoload
 (add-hook 'markdown-mode-hook 'jira-md-mode)
-

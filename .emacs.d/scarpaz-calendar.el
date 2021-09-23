@@ -2,15 +2,30 @@
 ;;
 ;; Most of the settings are self-explanatory.
 ;;
-;; An important change is that I typically work on weekly documents
-;; ("weeklies") that are timestamped on Friday dates, and that I
-;; organize under ~/.../weeklies/<year>/<date>, e.g.:
-;; ~/development/weeklies/2021/2021-09-24.md
+;; Features:
 ;;
-;; Pressing 'w' or <return> on a calendar date will take you to the weekly
-;; document associated with the Friday of that week.
+;; - display and initial view customizations
 ;;
-;; I made no changes to the old diary functions.
+;; - extra column displaying the week number in the year (1 ... 52)
+;;
+;; - pressing any digit ranging from '2' to '9' will select
+;;   progressively wider calendar layouts, with per-day columns
+;;   ranging from 2 to 9 characters;
+;;
+;; - support for weeklies:
+;;   (I typically organize my work on a weekly basis, via weekly ("weeklies") that are timestamped on Friday dates, and that I
+;;   keep  under ~/.../weeklies/<year>/<date>, e.g.: ~/development/weeklies/2021/2021-09-24.md)
+;;
+;;   - Pressing 'w' or <return> on a calendar date will take you to the
+;;     weekly document associated with the Friday of that week.
+;;
+;;
+;; I made no changes to the diary functions.
+;;
+;; The source code contained in this file is released under the GNU
+;; General Public License v3.  To learn more, see
+;; https://www.gnu.org/licenses/gpl-3.0.en.html
+;;
 ;;
 ;; Daniele Scarpazza
 
@@ -21,6 +36,7 @@
 ;; I don't have any Bahai colleagues, so I don't need to see their holidays
 (setq holiday-bahai-holidays nil)
 
+
 (setq calendar-view-diary-initially-flag t
       calendar-mark-holidays-flag        t
       calendar-mark-diary-entries-flag   t
@@ -30,15 +46,29 @@
       calendar-time-zone                 -300
       calendar-standard-time-zone-name "EST"
       calendar-daylight-time-zone-name "EDT"
-      calendar-intermonth-spacing        20
       calendar-left-margin               6
-      calendar-day-header-array      ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"]
-      calendar-day-header-width           3
+      calendar-day-header-array      ["Sunday" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday"]
+      calendar-day-header-width          3
       calendar-day-digit-width           3
       calendar-abbrev-length             3
       calendar-column-width              4
       calendar-month-width              40
       )
+
+
+(defun scarpaz/change-day-width (&optional arg)
+  (interactive "p")
+  (setq digit_pressed (- (aref (this-single-command-keys) 0) ?0))
+  (when (< digit_pressed 2) (setq digit_pressed 2))
+  (message " you pressed %i" digit_pressed)
+  (setq calendar-day-header-width          digit_pressed
+        calendar-day-digit-width           digit_pressed
+        calendar-abbrev-length             digit_pressed
+        calendar-intermonth-spacing        (+ 7 (* 2  digit_pressed))
+        calendar-column-width              (+ 1 digit_pressed)
+        calendar-month-width               (* 10 (+ 1 digit_pressed)))
+  (calendar-redraw)
+)
 
 (copy-face 'calendar-weekend-header 'calendar-iso-week-header-face)
 (set-face-attribute 'calendar-iso-week-header-face nil :height 1.0)
@@ -62,7 +92,16 @@
 
 (eval-after-load "calendar"
   `(progn
-     (define-key calendar-mode-map (kbd "+")         'diary-insert-entry)
+     (define-key calendar-mode-map (kbd "1")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "2")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "3")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "4")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "5")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "6")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "7")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "8")         'scarpaz/change-day-width)
+     (define-key calendar-mode-map (kbd "9")         'scarpaz/change-day-width)
+
      (define-key calendar-mode-map (kbd "w")         'scarpaz/open-weekly)
      (define-key calendar-mode-map (kbd "<f5>")      'calendar-redraw)
      (define-key calendar-mode-map (kbd "<return>")  'scarpaz/open-weekly)
@@ -98,4 +137,3 @@ Create the directory or revise the variable contents." scarpaz/weeklies_path)
       )
     )
   )
-
