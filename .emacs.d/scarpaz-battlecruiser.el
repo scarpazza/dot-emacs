@@ -37,7 +37,6 @@
 
 
 
-
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
 (global-set-key (kbd "C-, 9" )  'calendar)             ;; NumKeypad rightmost column, second row
@@ -54,7 +53,7 @@
 (global-set-key (kbd "C-, 4" )  'comment-region)                 ;; EXTRA_F5
 (global-set-key (kbd "C-, 5" )  'uncomment-region)               ;; EXTRA_F6
 (global-set-key (kbd "C-, 6" )  'display-line-numbers-mode)      ;; EXTRA_F7
-(global-set-key (kbd "C-, 7" )  'scarpaz/unassigned)             ;; EXTRA_F8
+(global-set-key (kbd "C-, 7" )  'whitespace-mode)                ;; EXTRA_F8
 (global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)    ;; EXTRA_F9
 
 ;; "Rule" key, i.e., the key in the middle of the arrow keys

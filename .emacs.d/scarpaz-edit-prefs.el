@@ -48,6 +48,8 @@
 (recentf-mode 1)
 (setq-default recent-save-file "~/.emacs.d/recent-files")
 
+
+
 (when (window-system)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)

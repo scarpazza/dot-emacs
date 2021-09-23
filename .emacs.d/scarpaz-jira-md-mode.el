@@ -113,6 +113,7 @@
   (add-hook 'post-command-hook 'scarpaz/cursor-hook)
   )
 
+;; TO DO: rewrite using looking-at
 
 (defun scarpaz/go-jira ()
   (interactive)

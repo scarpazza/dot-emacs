@@ -14,7 +14,7 @@
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
 (global-set-key (kbd "M-x")     'helm-M-x)
-(global-set-key (kbd "M-y")     'helm-show-kill-ring) 
+(global-set-key (kbd "M-y")     'helm-show-kill-ring)
 
 
 ;; BEGIN key binding cleanup
@@ -110,7 +110,11 @@
 (global-set-key (kbd "M--")    'magit-unstage-file)      ;; "Alt -" unstages the file on which you are working
 
 (global-set-key (kbd "M-/")           'helm-semantic-or-imenu)  ;; "Alt/" brings up the semantic menu
-(global-set-key (kbd "M-<return>")    'eval-last-sexp)          ;; "Alt-Enter" is my "act on thing under cursor"
+
+(global-set-key (kbd "M-<return>")    'scarpaz/guess-and-act)
+
+(define-key lisp-mode-map (kbd "M-<return>")       'eval-last-sexp) ;; in lisp, "act" means evaluate the subexpr
+(define-key emacs-lisp-mode-map (kbd "M-<return>") 'eval-last-sexp) ;;
 
 
 
@@ -118,6 +122,17 @@
 (define-key helm-read-file-map (kbd "<right>") 'forward-char)
 (define-key helm-find-files-map (kbd "<left>") 'backward-char)
 (define-key helm-find-files-map (kbd "<right>") 'forward-char)
+
+;; UNFINISHED
+;; - it only works when at beginning of expr
+;; - must integrate with scarpaz/go-jira 
+(defun scarpaz/guess-and-act ()
+  (interactive)
+  (when (looking-at "/\\|\\(/[\w-]+\\)+") 
+    (print (match-string 0))
+    (find-file (match-string 0))
+    ))
+
 
 ;; Tab completion
 ;; https://www.emacswiki.org/emacs/TabCompletion
