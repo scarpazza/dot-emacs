@@ -172,36 +172,84 @@
   (and (eq 0 (string-match pattern string))
        (eq (length string) (match-end 0) )))
 
+(setq scarpaz/popup_buffer nil)
+
 (defun scarpaz/cursor-hook ()
   (interactive)
+  (if (not scarpaz/popup_buffer)
+      (setq scarpaz/popup_buffer  (generate-new-buffer "*calendar peek*")))
+  (setq recognized nil)
   (let* ( ( bounds (bounds-of-thing-at-point 'symbol) )
           ( beg    (car bounds))
           ( end    (cdr bounds)) )
     (when beg
         (when (char-before beg)
-          (when (char-equal ?@ (char-before beg))
-            (setq str (buffer-substring-no-properties beg end))
-            (scarpaz/display-user-mention str beg end)
-            )
-          (setq str (buffer-substring-no-properties beg end))
-          (setq date nil)
+          (if (char-equal ?@ (char-before beg))
+              ;; it's a user mention
+              (progn
+                (setq str (buffer-substring-no-properties beg end))
+                (scarpaz/display-user-mention str beg end)
+                (setq recognized 't)
+                )
+            ;; it's something else
+            (progn
+              (setq str (buffer-substring-no-properties beg end))
+              (setq date nil)
+              (when (or (string-match-all jira-md/iso-date-regex str)
+                      (string-match-all jira-md/us-date-regex str) )
+                (setq date (scarpaz/parse-date-to-calendar-format str))
+                (setq recognized 't)
+                (with-current-buffer scarpaz/popup_buffer
+                  (setq buffer-read-only nil)
+                  (erase-buffer)
+                  (calendar-generate (car date) (nth 2 date) )
+                  (scarpaz/calendar-mark-visible-date date)
+                  ;;(scarpaz/calendar-mark-visible-date (calendar-cursor-to-date) calendar-today-marker)
 
-          (when (or (string-match-all jira-md/iso-date-regex str)
-                    (string-match-all jira-md/us-date-regex str) )
-            (setq date (scarpaz/parse-date-to-calendar-format str))
-            (print date)
-            (setq buf (get-buffer-create "*temp calendar buffer*"))
-            (switch-to-buffer buf)
-            (calendar-generate-month (car date) (nth 2 date) 6)
+                  (calendar-mode)
+                  (display-buffer-in-side-window (current-buffer)
+                                                 '(display-buffer-reuse-window . ((inhibit-same-window . t))))
 
-            (setq alcal (buffer-string))
-            (kill-buffer buf)
-            (message alcal)
-            )
-        )
-)))
+                  (with-selected-window (get-buffer-window (current-buffer))
+                    (calendar-cursor-to-visible-date date)
+                    )
+                  )))
+              )))
+    (when (not recognized) (delete-windows-on scarpaz/popup_buffer))
+))
+
 
 (add-hook 'post-command-hook 'scarpaz/cursor-hook)
 
+
+
+;; 2021-10-12 test line
+
+
 ;;;###autoload
 (add-hook 'markdown-mode-hook 'jira-md-mode)
+
+
+(defun scarpaz/calendar-mark-visible-date (date &optional mark)
+  (if (calendar-date-is-valid-p date)
+      (with-current-buffer scarpaz/popup_buffer
+        (save-excursion
+          (calendar-cursor-to-visible-date date)
+          (setq mark
+                (or (and (stringp mark) (= (length mark) 1) mark) ; single-char
+                          (and (listp mark) (> (length mark) 0) mark) ; attrs
+                          (and (facep mark) mark) ; )) face-name
+                          diary-entry-marker))
+          (cond
+           ;; Face or an attr-list that contained a face.
+           ((facep mark)
+            (overlay-put
+             (make-overlay (1- (point)) (1+ (point))) 'face mark))
+           ;; Single-character mark, goes after the date.
+           ((and (stringp mark) (= (length mark) 1))
+            (overlay-put
+             (make-overlay (1+ (point)) (+ 2 (point))) 'display mark))
+           (t                           ; attr list
+            (overlay-put
+             (make-overlay (1- (point)) (1+ (point))) 'face
+             (calendar-make-temp-face mark))))))))
