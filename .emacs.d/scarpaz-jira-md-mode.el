@@ -43,6 +43,7 @@
 
 (require 'font-lock)
 (require 'org-jira)
+(require 'calendar)
 (provide 'jira-md-mode)
 
 ;; Customization variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -174,6 +175,42 @@
 
 (setq scarpaz/popup_buffer nil)
 
+
+;; 2021-1-13 test line
+
+
+(defun scarpaz/peek-at-date ( date_string )
+  "Peek at the current date.
+This means popping up a quick calendar peek window centered on the date, if no calendar window already exists.
+If a calendar window already exists and is visible, that just display the current date there.
+The input is the date string, unparsed."
+
+  (setq date (scarpaz/parse-date-to-calendar-format date_string))
+
+  (if (get-buffer-window calendar-buffer)
+      ;; A *Calendar* window already exists - use it to peek
+      (progn
+        (with-selected-window (get-buffer-window calendar-buffer)
+          (calendar-goto-date date)
+          (calendar-mark-visible-date date 'calendar-peek-date)
+          (calendar-cursor-to-visible-date date)
+        )
+        )
+    ;;  No *Calendar* window exists - create my owns
+    (with-current-buffer scarpaz/popup_buffer
+      (setq buffer-read-only nil)
+      (erase-buffer)
+      (calendar-generate (car date) (nth 2 date) )
+      (calendar-mode)
+      (display-buffer-in-side-window (current-buffer)
+                                   '(display-buffer-reuse-window . ((inhibit-same-window . t))))
+      (with-selected-window (get-buffer-window (current-buffer))
+        (calendar-cursor-to-visible-date date)
+        (scarpaz/calendar-mark-visible-date date 'calendar-peek-date)
+        )))
+  )
+
+
 (defun scarpaz/cursor-hook ()
   (interactive)
   (if (not scarpaz/popup_buffer)
@@ -196,24 +233,10 @@
               (setq str (buffer-substring-no-properties beg end))
               (setq date nil)
               (when (or (string-match-all jira-md/iso-date-regex str)
-                      (string-match-all jira-md/us-date-regex str) )
-                (setq date (scarpaz/parse-date-to-calendar-format str))
+                        (string-match-all jira-md/us-date-regex str) )
                 (setq recognized 't)
-                (with-current-buffer scarpaz/popup_buffer
-                  (setq buffer-read-only nil)
-                  (erase-buffer)
-                  (calendar-generate (car date) (nth 2 date) )
-                  (scarpaz/calendar-mark-visible-date date)
-                  ;;(scarpaz/calendar-mark-visible-date (calendar-cursor-to-date) calendar-today-marker)
-
-                  (calendar-mode)
-                  (display-buffer-in-side-window (current-buffer)
-                                                 '(display-buffer-reuse-window . ((inhibit-same-window . t))))
-
-                  (with-selected-window (get-buffer-window (current-buffer))
-                    (calendar-cursor-to-visible-date date)
-                    )
-                  )))
+                (scarpaz/peek-at-date str)
+                ))
               )))
     (when (not recognized) (delete-windows-on scarpaz/popup_buffer))
 ))
@@ -222,8 +245,14 @@
 (add-hook 'post-command-hook 'scarpaz/cursor-hook)
 
 
-
-;; 2021-10-12 test line
+(defface calendar-peek-date
+  '((t :foreground "white"
+       :background "RoyalBlue2"
+       :weight bold
+    ;; :underline t
+       ))
+  "Face for indicating the date under the cursor."
+  :group 'calendar-faces)
 
 
 ;;;###autoload
@@ -231,6 +260,7 @@
 
 
 (defun scarpaz/calendar-mark-visible-date (date &optional mark)
+  ;; Lazy copy of calendar-mark-visible-date, but operating on my pop-up buffer
   (if (calendar-date-is-valid-p date)
       (with-current-buffer scarpaz/popup_buffer
         (save-excursion
