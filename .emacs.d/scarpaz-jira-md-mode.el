@@ -18,7 +18,7 @@
 ;;   or move your cursor on them;
 ;;   It uses a hash table to resolve usernames (and substrings) only once.
 ;;
-;; - it displays a transient calendar when the cursor is over a date
+;; - it displays a transient calendar peek when the cursor is over a date
 ;;
 ;; - it binds "Alt-Enter" to act on the element under the cursor:
 ;;   - for jira tickets,
@@ -26,9 +26,9 @@
 ;;   - for dates (ISO or US),
 ;;     it opens the calendar on that date.
 ;;
-;; It distinguishes between ISO and US dates.  I don't recognize
-;; European-style dates because they can't be distinguished from the
-;; American-style ones just by syntax (the year is at the end in
+;; It distinguishes between ISO and US dates.  I chose not to
+;; recognize European-style dates because they can't be distinguished
+;; from American-style ones just by syntax (the year is at the end in
 ;; both). This is no slight against Europe: I'm European by birth and
 ;; upbringing, and I prefer the ISO format. In fact, using
 ;; international standards is in the true nature of the European
@@ -80,26 +80,59 @@
   "Regular expression determining what tokens are recognized as US dates, e.g., MM-DD-YYYY. Change this if you need to represent dates in other millennia than the current one."
   :type 'string  :require 'jira-md-mode  :group 'jira-md)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defface calendar-peek-date
+  '((t :foreground "white"
+       :background "RoyalBlue2"
+       :weight bold
+    ;; :underline t
+       ))
+  "Face for indicating the date under the cursor."
+  :group 'calendar-faces)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq scarpaz/popup_buffer nil)
+
+(setq jira-md/day-name-regex
+      (concat ;"\\([^a-zA-Z]\\)"
+       "\\("
+      (mapconcat 'identity calendar-day-name-array "\\|")
+      ;;        "\\)\\($\\|[^a-zA-Z]
+      "\\)"
+      ) )
+
+(message "jira-md: Recognizing week day names %s - to localize, customize variable 'calendar-day-name-array'."
+         jira-md/day-name-regex)
+
+(setq jira-md/day-abbrev-regex
+      (concat "\\("
+              (mapconcat 'identity calendar-day-abbrev-array "\\|")
+              "\\)"))
+(message "jira-md: Recognizing abbreviated week day names %s - to localize, customize variable 'calendar-day-abbrev-array'."
+         jira-md/day-abbrev-regex)
 
 
 (setq jira-md/keywords
       (list
-        (cons jira-md/email-regex     'font-lock-string-face)          ;; emails
-        (cons jira-md/issue-id-regex  'font-lock-function-name-face) ;; jira issues
-        (cons jira-md/user-id-regex   'font-lock-constant-face)      ;; user mentions
-        (cons jira-md/iso-date-regex  'font-lock-keyword-face)       ;; dates
-        (cons jira-md/us-date-regex   'font-lock-keyword-face)       ;; dates
+        (cons jira-md/email-regex      'font-lock-string-face)        ;; email addresses
+        (cons jira-md/issue-id-regex   'font-lock-function-name-face) ;; jira issues
+        (cons jira-md/user-id-regex    'font-lock-constant-face)      ;; user mentions
+        (cons jira-md/iso-date-regex   'font-lock-keyword-face)       ;; dates
+        (cons jira-md/us-date-regex    'font-lock-keyword-face)       ;; dates
+        (cons jira-md/day-name-regex   'font-lock-keyword-face ) ;; names of days of the week
+        (cons jira-md/day-abbrev-regex 'font-lock-keyword-face ) ;; abbreviated names of days of the week
         )
       )
+
+
 
 ;;;###autoload
 (define-minor-mode jira-md-mode
   "Get your foos in the right places."
   :lighter " jira-md"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "M-<return>") 'scarpaz/go-jira)
+            (define-key map (kbd "M-<return>") 'scarpaz/act-on-element)
             map)
 
   (font-lock-add-keywords nil jira-md/keywords)
@@ -114,9 +147,11 @@
   (add-hook 'post-command-hook 'scarpaz/cursor-hook)
   )
 
-;; TO DO: rewrite using looking-at
 
-(defun scarpaz/go-jira ()
+
+(defun scarpaz/act-on-element ()
+  "Act on the element under the cursor. If it's a JIRA issue number, open it.
+   If it's a date, open the calendar on it"
   (interactive)
   (let* (
          (initialpt (point))
@@ -127,14 +162,35 @@
          (token     (buffer-substring-no-properties start end))
          )
     (goto-char initialpt)
-    (message "token %s" token)
+    (message "act on token %s %s" token  (string-match-all jira-md/day-name-regex   token) )
     (cond
-     ( (string-match-all jira-md/issue-id-regex token) (org-jira-get-issue token) )
-     ( (string-match-all jira-md/iso-date-regex token) (scarpaz/go-to-date token) )
-     ( (string-match-all jira-md/us-date-regex token)  (scarpaz/go-to-date token) )
+     ( (string-match-all jira-md/issue-id-regex   token) (org-jira-get-issue  token) )
+     ( (string-match-all jira-md/iso-date-regex   token) (scarpaz/go-to-date  token) )
+     ( (string-match-all jira-md/us-date-regex    token) (scarpaz/go-to-date  token) )
+     ( (string-match-all jira-md/day-name-regex   token) (scarpaz/expand-date token start end) )
+     ( (string-match-all jira-md/day-abbrev-regex token) (scarpaz/expand-date token start end) )
      )
     )
   )
+
+(defun scarpaz/expand-date (token start end)
+  (setq DoW_idx (seq-position calendar-day-name-array token))
+  (if (not DoW_idx)
+    (setq DoW_idx (seq-position calendar-day-abbrev-array token)))
+  (when DoW_idx
+    (setq today (calendar-current-date))
+    (setq dow
+          (calendar-gregorian-from-absolute
+           (+ (- (calendar-absolute-from-gregorian today)
+                 (calendar-day-of-week today))
+              DoW_idx)))
+    (goto-char start)
+    (delete-region start end)
+    (insert (calendar-date-string dow))
+    )
+  )
+
+
 
 (defun scarpaz/parse-date-to-calendar-format (token)
   (setq parsed (mapcar 'string-to-number (split-string token "[-/]")))
@@ -173,7 +229,6 @@
   (and (eq 0 (string-match pattern string))
        (eq (length string) (match-end 0) )))
 
-(setq scarpaz/popup_buffer nil)
 
 
 ;; 2021-1-13 test line
@@ -194,6 +249,7 @@ The input is the date string, unparsed."
           (calendar-goto-date date)
           (calendar-mark-visible-date date 'calendar-peek-date)
           (calendar-cursor-to-visible-date date)
+          (right-char)
         )
         )
     ;;  No *Calendar* window exists - create my owns
@@ -205,13 +261,16 @@ The input is the date string, unparsed."
       (display-buffer-in-side-window (current-buffer)
                                    '(display-buffer-reuse-window . ((inhibit-same-window . t))))
       (with-selected-window (get-buffer-window (current-buffer))
-        (calendar-cursor-to-visible-date date)
         (scarpaz/calendar-mark-visible-date date 'calendar-peek-date)
+        (calendar-cursor-to-visible-date date)
+        (right-char)
+
         )))
   )
 
 
 (defun scarpaz/cursor-hook ()
+  "This hook gives you a peek at user mentions, dates and in the future other active elements."
   (interactive)
   (if (not scarpaz/popup_buffer)
       (setq scarpaz/popup_buffer  (generate-new-buffer "*calendar peek*")))
@@ -243,17 +302,6 @@ The input is the date string, unparsed."
 
 
 (add-hook 'post-command-hook 'scarpaz/cursor-hook)
-
-
-(defface calendar-peek-date
-  '((t :foreground "white"
-       :background "RoyalBlue2"
-       :weight bold
-    ;; :underline t
-       ))
-  "Face for indicating the date under the cursor."
-  :group 'calendar-faces)
-
 
 ;;;###autoload
 (add-hook 'markdown-mode-hook 'jira-md-mode)
