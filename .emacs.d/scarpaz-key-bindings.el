@@ -61,15 +61,17 @@
   (interactive) (set-buffer-modified-p nil) (kill-this-buffer) (delete-window) )
 
 (defun scarpaz/toggle-line-spacing ()
-  "Cycle line spacing between 0, 25%, 50%;
-   On the M122 keyboard, I even have a dedicated key for this, with a 'Line Space' keycap taken from an old IBM Wheelwriter typewriter"
+  "Cycle line spacing between 0, +25%, +50%, +100%, +200%.
+   On the M122 keyboard, I bind this function to a dedicated key, on which I installed a 'Line Space'
+   keycap taken from an old IBM Wheelwriter typewriter."
   (interactive)
   (if line-spacing
-      (if (= line-spacing 0.25)
-          (setq line-spacing 0.5)
-          (setq line-spacing nil) )
+      (if (< line-spacing 2)
+          (setq line-spacing (* 2 line-spacing))
+        (setq line-spacing nil) )
     (setq line-spacing 0.25))
   (redraw-frame (selected-frame)))
+
 
 
 ;; BEGIN establish my preferred key bindings
@@ -125,10 +127,10 @@
 
 ;; UNFINISHED
 ;; - it only works when at beginning of expr
-;; - must integrate with scarpaz/go-jira 
+;; - must integrate with scarpaz/go-jira
 (defun scarpaz/guess-and-act ()
   (interactive)
-  (when (looking-at "/\\|\\(/[\w-]+\\)+") 
+  (when (looking-at "/\\|\\(/[\w-]+\\)+")
     (print (match-string 0))
     (find-file (match-string 0))
     ))
