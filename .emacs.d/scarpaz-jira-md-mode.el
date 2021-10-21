@@ -44,7 +44,8 @@
 (require 'font-lock)
 (require 'org-jira)
 (require 'calendar)
-(provide 'jira-md-mode)
+(require 'yafolding)
+
 
 ;; Customization variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -133,6 +134,10 @@
   :lighter " jira-md"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "M-<return>") 'scarpaz/act-on-element)
+            (define-key map (kbd "C-<right>")  'markdown-demote)
+            (define-key map (kbd "C-<left>")   'markdown-promote)
+            (define-key map (kbd "M-=")        'outline-show-subtree)
+            (define-key map (kbd "M--")        'outline-hide-subtree)
             map)
 
   (font-lock-add-keywords nil jira-md/keywords)
@@ -297,7 +302,9 @@ The input is the date string, unparsed."
                 (scarpaz/peek-at-date str)
                 ))
               )))
-    (when (not recognized) (delete-windows-on scarpaz/popup_buffer))
+    (when (and (not recognized)
+               (buffer-live-p scarpaz/popup_buffer))
+               (delete-windows-on scarpaz/popup_buffer))
 ))
 
 
@@ -307,8 +314,14 @@ The input is the date string, unparsed."
 (add-hook 'markdown-mode-hook 'jira-md-mode)
 
 
+(add-hook 'markdown-mode-hook 'yafolding-mode)
+;; I write deep and long itemize lists and need to collapse them.
+
+
 (defun scarpaz/calendar-mark-visible-date (date &optional mark)
-  ;; Lazy copy of calendar-mark-visible-date, but operating on my pop-up buffer
+  ;; Lazy copy of calendar-mark-visible-date, but operating on my pop-up buffer.
+  ;; This is ugly.
+  ;; Unclear how I'll fix this.
   (if (calendar-date-is-valid-p date)
       (with-current-buffer scarpaz/popup_buffer
         (save-excursion
@@ -331,3 +344,7 @@ The input is the date string, unparsed."
             (overlay-put
              (make-overlay (1- (point)) (1+ (point))) 'face
              (calendar-make-temp-face mark))))))))
+
+
+;;;
+(provide 'jira-md-mode)
