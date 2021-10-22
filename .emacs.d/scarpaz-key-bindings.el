@@ -10,6 +10,9 @@
 
 (require 'helm)
 (require 'helm-config)
+(require 'yafolding)
+
+
 
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
@@ -104,7 +107,7 @@
 (global-set-key (kbd "<f8>" )   'kill-this-buffer)            ;; F8 is "delete" in Midnight Commander
 (global-set-key (kbd "C-<f8>")  'delete-window)               ;; C-F8 is a stronger version of F8
 
-(global-set-key (kbd "<f9>" )   'delete-trailing-whitespace)  ;;
+(global-set-key (kbd "<f9>" )   'scarpaz/safe-delete-trailing-whitespace)  ;;
 (global-set-key (kbd "<f12>")   'other-window)                ;;
 
 
@@ -124,6 +127,15 @@
 (define-key helm-read-file-map (kbd "<right>") 'forward-char)
 (define-key helm-find-files-map (kbd "<left>") 'backward-char)
 (define-key helm-find-files-map (kbd "<right>") 'forward-char)
+
+
+(defun scarpaz/safe-delete-trailing-whitespace ()
+  (interactive)
+  (when bound-and-true-p yafolding-mode
+        (yafolding-show-all))
+  (delete-trailing-whitespace)
+  )
+
 
 ;; UNFINISHED
 ;; - it only works when at beginning of expr
