@@ -130,8 +130,10 @@
 
 
 (defun scarpaz/safe-delete-trailing-whitespace ()
+  "Fixes an incompatibility between yafolding-mode and delete-trailing-whitespace.
+   Unfolds all items before deleting trailing whitespace"
   (interactive)
-  (when bound-and-true-p yafolding-mode
+  (when (bound-and-true-p yafolding-mode)
         (yafolding-show-all))
   (delete-trailing-whitespace)
   )
