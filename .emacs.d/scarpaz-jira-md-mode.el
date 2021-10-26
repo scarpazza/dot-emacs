@@ -134,8 +134,8 @@
   :lighter " jira-md"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "M-<return>") 'scarpaz/act-on-element)
-            (define-key map (kbd "C-<right>")  'markdown-demote)
-            (define-key map (kbd "C-<left>")   'markdown-promote)
+            ;;(define-key map (kbd "C-<right>")  'markdown-demote)
+            ;;(define-key map (kbd "C-<left>")   'markdown-promote)
             (define-key map (kbd "M-=")        'outline-show-subtree)
             (define-key map (kbd "M--")        'outline-hide-subtree)
             map)

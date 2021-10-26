@@ -5,9 +5,9 @@
 ;;       https://github.com/scarpazza/battlecruiser
 ;;
 ;; For ease of testing, and in an attempt to make experience close enough whenever I don't have an
-;; M122 keyboard, I'm mapping the same function to each function key in the range F13...F24 and to a
-;; Control-Fn key where Fn key is the function key right below it (e.g., F13 does the same thing as
-;; ^F1, F14 does the same as ^F2, and so on.)
+;; M122 keyboard, I'm binding the same function associated each key in F13 ... F24 also to combination
+;; Control-F<n-12>, i.e., F13 does the same thing as ^F1, F14 does the same as ^F2, and so on.)
+;;
 
 (defun scarpaz/unassigned ()
   (interactive) (message "Unassigned battlecruiser key code") )

@@ -116,7 +116,6 @@
 
 (global-set-key (kbd "M-/")           'helm-semantic-or-imenu)  ;; "Alt/" brings up the semantic menu
 
-(global-set-key (kbd "M-<return>")    'scarpaz/guess-and-act)
 
 (define-key lisp-mode-map (kbd "M-<return>")       'eval-last-sexp) ;; in lisp, "act" means evaluate the subexpr
 (define-key emacs-lisp-mode-map (kbd "M-<return>") 'eval-last-sexp) ;;
@@ -137,17 +136,6 @@
         (yafolding-show-all))
   (delete-trailing-whitespace)
   )
-
-
-;; UNFINISHED
-;; - it only works when at beginning of expr
-;; - must integrate with scarpaz/go-jira
-(defun scarpaz/guess-and-act ()
-  (interactive)
-  (when (looking-at "/\\|\\(/[\w-]+\\)+")
-    (print (match-string 0))
-    (find-file (match-string 0))
-    ))
 
 
 ;; Tab completion

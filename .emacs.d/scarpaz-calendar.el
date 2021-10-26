@@ -90,8 +90,25 @@
 (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
 
 
+;; Unfinished - I haven't decided what I want to do here
+(defun scarpaz/toggle-diary-view-entries (&optional arg)
+  (interactive "p")
+  (message "%s" (diary-view-entries))
+  )
+
+
+(defun scarpaz/display-date-info (&optional arg)
+  (interactive "p")
+  (diary-view-entries)
+  (calendar-cursor-holidays)
+  )
+
+
+
 (eval-after-load "calendar"
   `(progn
+
+     ;; these keys stretch of compact the calendar horizontally
      (define-key calendar-mode-map (kbd "1")         'scarpaz/change-day-width)
      (define-key calendar-mode-map (kbd "2")         'scarpaz/change-day-width)
      (define-key calendar-mode-map (kbd "3")         'scarpaz/change-day-width)
@@ -101,6 +118,15 @@
      (define-key calendar-mode-map (kbd "7")         'scarpaz/change-day-width)
      (define-key calendar-mode-map (kbd "8")         'scarpaz/change-day-width)
      (define-key calendar-mode-map (kbd "9")         'scarpaz/change-day-width)
+
+     ;; bind function keys to operations that are consistent with their
+     ;; use elsewhere
+     (define-key calendar-mode-map (kbd "<f2>")      'diary-insert-entry)
+     (define-key calendar-mode-map (kbd "<f4>")      'diary-insert-entry)
+
+     (define-key calendar-mode-map (kbd "+")         'diary-insert-entry)
+     (define-key calendar-mode-map (kbd "=")         'diary-insert-entry)
+     (define-key calendar-mode-map (kbd "SPC")       'scarpaz/display-date-info)
 
      (define-key calendar-mode-map (kbd "w")         'scarpaz/open-weekly)
      (define-key calendar-mode-map (kbd "<f5>")      'calendar-redraw)
