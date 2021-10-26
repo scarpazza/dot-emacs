@@ -73,13 +73,13 @@ My philosophy is to change only I use most frequently, while leaving most origin
 Calendar
 ---------
 
-I customize the calendar significantly, because I spend a lot of time in it.
+I customize the calendar significantly, because I use it significantly.
 
 For example:
 
 * I added an extra column displaying the number of each week in the year (1 ... 52)
 
-* Pressing any digit ranging from '2' to '9' will select progressively wider
+* Pressing any digit ranging from '1' to '9' will select progressively wider
   calendar layouts, with per-day columns ranging from 2 to 9 characters.
   This is especially useful these days in which monitors are wide and have high resolutions.
 
@@ -87,6 +87,11 @@ For example:
   weekly basis, via weekly reports that timestamped on Friday dates. Pressing
   `w` or `return` on a calendar date will take you to the weekly report
   associated with the Friday of that week.
+
+* I bind keys `+` and `=` to `diary-insert-entry`
+
+* I bind the space bar to a function that will display both diary and holiday information on a given date.
+
 
 
 Jira markdown integration
@@ -100,8 +105,3 @@ linking and expands user mentions.
 I offer a `jira-md` minor mode that colorizes user mentions, jira issue
 identifiers and dates, offers useful information on them as you point the cursor
 at them, and allows you to interact with them via the `Alt-Enter` keystroke.
-
-
-
-
-
