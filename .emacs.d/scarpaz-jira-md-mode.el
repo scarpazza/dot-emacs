@@ -158,16 +158,21 @@
   "Act on the element under the cursor. If it's a JIRA issue number, open it.
    If it's a date, open the calendar on it"
   (interactive)
-  (let* (
-         (initialpt (point))
-         (ignore    (skip-chars-backward "A-Za-z0-9_/-"))
-         (start     (point))
-         (ignore    (skip-chars-forward "A-Za-z0-9_/-"))
-         (end       (point))
-         (token     (buffer-substring-no-properties start end))
-         )
+
+  (if (thing-at-point-looking-at "^[[:blank:]]*[-+*]")
+      (progn
+        (yafolding-toggle-element)
+        (message "Folding list element"))
+    (let* (
+           (initialpt (point))
+           (ignore    (skip-chars-backward "A-Za-z0-9_/-"))
+           (start     (point))
+           (ignore    (skip-chars-forward "A-Za-z0-9_/-"))
+           (end       (point))
+           (token     (buffer-substring-no-properties start end))
+           )
     (goto-char initialpt)
-    (message "act on token %s %s" token  (string-match-all jira-md/day-name-regex   token) )
+    ;;(message "act on token %s %s" token  (string-match-all jira-md/day-name-regex   token) )
     (cond
      ( (string-match-all jira-md/issue-id-regex   token) (org-jira-get-issue  token) )
      ( (string-match-all jira-md/iso-date-regex   token) (scarpaz/go-to-date  token) )
@@ -175,6 +180,7 @@
      ( (string-match-all jira-md/day-name-regex   token) (scarpaz/expand-date token start end) )
      ( (string-match-all jira-md/day-abbrev-regex token) (scarpaz/expand-date token start end) )
      )
+    )
     )
   )
 
