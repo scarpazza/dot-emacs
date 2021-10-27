@@ -37,17 +37,19 @@ Key Bindings
 
 ### Global key bindings
 
-A lot of default emacs keybindings are, as perceived in 2021, insane.
+A lot of default emacs key bindings are, as perceived in 2021, insane.
 Many well curated emacs packages remap them radically.
 
-My philosophy is to change only I use most frequently, while leaving most original keybindings in place, unless there's other compelling benefit to remove them.
+My philosophy is to change only those I use most frequently, while leaving
+most original keybindings in place, unless there's other compelling
+benefit to remove them.
 
-* Some extremely common function take three keystrokes with the default bindings.
+* Some extremely common function take three key presses with the default bindings.
   One example is saving (`C-x C-s`).
-  I remap that to one key, `F2`.
-  I also unbind the original binding `C-x C-s` so that I'm forced to learn the new one.
+  I remap that to one key press, `F2`.
+  I also unbind the original binding `C-x C-s`, so that I'm forced to learn the new one.
 
-* emacs leaves many function keys available to the user.  I map virtually all of
+* emacs leaves many function keys available for binding.  I map all of
   them to functions that I find useful.  In fact, I reclaim even more function
   keys than those available by default (e.g., `F3` and `F4`, originally
   associated with macro recording).  While my choice of new bindings is highly
@@ -79,7 +81,7 @@ My philosophy is to change only I use most frequently, while leaving most origin
 * If you use emacs the same way I do, you might frequently find yourself
   with a lot of buffers which accumulated over time, and you no longer want.
   I frequently want to declutter them, and I want to do it quickly.
-  To that goal, I bind the `delete` key so that it kills buffers in `helm-mini`. 
+  To that goal, I bind the `delete` key so that it kills buffers in `helm-mini`.
   I do so for both the PC and MacOS keys labeled "delete" or "Del", even
   if they normally perform different functions (on a Mac, the key labeled
   delete is really a backspace).
@@ -112,11 +114,38 @@ For example:
 Jira markdown integration
 -------------------
 
-Unfortunately, Atlassian products don't render org-mode. Yet.
+Unfortunately, Atlassian products like BitBucket don't render
+org-mode.  Jira tickets requesting that feature [in the
+cloud](https://jira.atlassian.com/browse/BCLOUD-6569) and [in their
+server software](https://jira.atlassian.com/browse/BSERV-9078) have
+been langushing in the *Gathering Interest* stage for years now.
 
-What they render is a customized version of markdown that automates jira issue
-linking and expands user mentions.
+What they render is a customized version of markdown, that
+automatically decorates user mentions and automatically links Jira
+issues and pull requests.
 
-I offer a `jira-md` minor mode that colorizes user mentions, jira issue
-identifiers and dates, offers useful information on them as you point the cursor
-at them, and allows you to interact with them via the `Alt-Enter` keystroke.
+The [markdown mode by Jason
+Blevins](https://jblevins.org/projects/markdown-mode/) already does a
+fantastic job at supporting markdown editing.
+
+What it misses are the BitBucket-specific extensions.
+
+I offer a minor mode named `jira-md` that you can use on top of `markdown-mode`.
+
+It offers the same features:
+* syntax highlighting
+  * of user mentions
+  * of jira issues (e.g., ABC-123)
+  * of dates (e.g., 2021-10-26)
+
+* "peeking", i.e., getting transient information when the cursor is over
+  * user mentions
+  * dates (displays the calendar; this is useful to check what day of the week a particular date falls on, as you type it)
+
+
+* active elements (i.e., pressing `Alt-Enter` when the cursor is over an active element)
+  * jumps to jira issues (via `org-jira`) when over a Jira issue ID
+  * jumps to the calendar when over a date in one of the recognized formats
+  * folds and unfolds list items and their subtrees,
+    when over the bullet character (e.g., `*` or `-`)
+  * expands names of days of the week into their full date.
