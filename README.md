@@ -33,6 +33,10 @@ It's not crazy... for me. It might be crazy for you. You do you.
 Key Bindings
 ------------
 
+
+
+### Global key bindings
+
 A lot of default emacs keybindings are, as perceived in 2021, insane.
 Many well curated emacs packages remap them radically.
 
@@ -68,6 +72,17 @@ My philosophy is to change only I use most frequently, while leaving most origin
   [r/MechanicalKeyboards](https://www.reddit.com/r/MechanicalKeyboards/) people love,
   it hardly makes sense to keep these bindings in place. I reclaim them.
   In the specific case of `C-v`, I go back to CUA land, making it another paste (`yank`).
+
+
+### Helm key bindings
+
+* If you use emacs the same way I do, you might frequently find yourself
+  with a lot of buffers which accumulated over time, and you no longer want.
+  I frequently want to declutter them, and I want to do it quickly.
+  To that goal, I bind the `delete` key so that it kills buffers in `helm-mini`. 
+  I do so for both the PC and MacOS keys labeled "delete" or "Del", even
+  if they normally perform different functions (on a Mac, the key labeled
+  delete is really a backspace).
 
 
 Calendar

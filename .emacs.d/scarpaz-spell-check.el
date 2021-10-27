@@ -4,6 +4,8 @@
 ;; Shamelessly stolen from: https://www.emacswiki.org/emacs/FlySpell#h5o-11
 ;;
 
+(require 'flyspell)
+
 (defun flyspell-emacs-popup-textual (event poss word)
   "A textual flyspell popup menu."
   (require 'popup)
@@ -17,20 +19,19 @@
                      '()))
          (affix (car (cdr (cdr (cdr poss)))))
          show-affix-info
-         (base-menu  (let ((save
-                            (if (and (consp affix) show-affix-info)
-                                (list
-                                 (list (concat "Save affix: " (car affix))
-                                       'save)
-                                 '("Accept (session)" session)
-                                 '("Accept (buffer)" buffer))
-                              '(("Save word" save)
-                                ("Accept (session)" session)
-                                ("Accept (buffer)" buffer)))))
+         (base-menu  (let ((save (if (and (consp affix) show-affix-info)
+                                     (list
+                                      (list (concat "Save affix: " (car affix))
+                                            'save)
+                                      '("Accept (session)" session)
+                                      '("Accept (buffer)" buffer))
+                                   '(("Save word" save)
+                                     ("Accept (session)" session)
+                                     ("Accept (buffer)" buffer)))))
                        (if (consp cor-menu)
-                           (append (cons save " ") cor-menu)
+                           (append cor-menu (cons "" save))
                          save)))
-         (menu (mapcar 
+         (menu (mapcar
                 (lambda (arg) (if (consp arg) (car arg) arg))
                 base-menu)))
     (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))

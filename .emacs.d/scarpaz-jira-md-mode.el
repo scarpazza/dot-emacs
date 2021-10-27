@@ -121,8 +121,8 @@
         (cons jira-md/user-id-regex    'font-lock-constant-face)      ;; user mentions
         (cons jira-md/iso-date-regex   'font-lock-keyword-face)       ;; dates
         (cons jira-md/us-date-regex    'font-lock-keyword-face)       ;; dates
-        (cons jira-md/day-name-regex   'font-lock-keyword-face ) ;; names of days of the week
-        (cons jira-md/day-abbrev-regex 'font-lock-keyword-face ) ;; abbreviated names of days of the week
+        (cons jira-md/day-name-regex   'font-lock-keyword-face )      ;; names of days of the week
+        (cons jira-md/day-abbrev-regex 'font-lock-keyword-face )      ;; abbreviated names of days of the week
         )
       )
 
@@ -200,7 +200,6 @@
     (insert (calendar-date-string dow))
     )
   )
-
 
 
 (defun scarpaz/parse-date-to-calendar-format (token)

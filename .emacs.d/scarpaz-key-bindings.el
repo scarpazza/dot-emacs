@@ -122,10 +122,23 @@
 
 
 
-(define-key helm-read-file-map (kbd "<left>") 'backward-char)
-(define-key helm-read-file-map (kbd "<right>") 'forward-char)
-(define-key helm-find-files-map (kbd "<left>") 'backward-char)
+(define-key helm-read-file-map  (kbd "<left>")  'backward-char)
+(define-key helm-read-file-map  (kbd "<right>") 'forward-char)
+(define-key helm-find-files-map (kbd "<left>")  'backward-char)
 (define-key helm-find-files-map (kbd "<right>") 'forward-char)
+
+
+;; Set up a keybindings to get rid of buffers expeditiously
+;; MacOS: DEL corresponds to the key labeled "delete" on macs, which is really a backspace.
+;; On PCs
+
+(define-key helm-buffer-map (kbd "DEL") 'helm-buffer-run-kill-persistent)
+(define-key helm-buffer-map (kbd "<backspace>") 'helm-buffer-run-kill-persistent)
+(define-key helm-buffer-map (kbd "<deletechar>") 'helm-buffer-run-kill-persistent)
+
+
+
+
 
 
 (defun scarpaz/safe-delete-trailing-whitespace ()
