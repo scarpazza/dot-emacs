@@ -41,10 +41,14 @@
 ;; https://www.gnu.org/licenses/gpl-3.0.en.html
 ;;
 
+;; TO DO - helm ffap helm-ffap-guesser
+
 (require 'font-lock)
 (require 'org-jira)
 (require 'calendar)
 (require 'yafolding)
+(require 'thingatpt)
+
 
 
 ;; Customization variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -81,7 +85,6 @@
   "Regular expression determining what tokens are recognized as US dates, e.g., MM-DD-YYYY. Change this if you need to represent dates in other millennia than the current one."
   :type 'string  :require 'jira-md-mode  :group 'jira-md)
 
-
 (defface calendar-peek-date
   '((t :foreground "white"
        :background "RoyalBlue2"
@@ -92,9 +95,23 @@
   :group 'calendar-faces)
 
 
+(defcustom jira-md/absolute-path-regex
+  "\\(/[-~/[:alnum:]_.${}#%,:]+\\)+"
+  "Regular expression describing absolute pathnames. Change this if you need to recognize stranger pathnames."
+  :type 'string  :require 'jira-md-mode  :group 'jira-md)
+
+(defcustom jira-md/relative-path-regex
+  "\\.\\(\\.\\)?\\(/[-~/[:alnum:]_.${}#%,:]+\\)+"
+  "Regular expression describing relative pathnames. Change this if you need to recognize stranger pathnames."
+  :type 'string  :require 'jira-md-mode  :group 'jira-md)
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq scarpaz/popup_buffer nil)
 
+;; TO DO enforce whole word
 (setq jira-md/day-name-regex
       (concat ;"\\([^a-zA-Z]\\)"
        "\\("
@@ -103,27 +120,26 @@
       "\\)"
       ) )
 
-(message "jira-md: Recognizing week day names %s - to localize, customize variable 'calendar-day-name-array'."
-         jira-md/day-name-regex)
-
 (setq jira-md/day-abbrev-regex
       (concat "\\("
               (mapconcat 'identity calendar-day-abbrev-array "\\|")
               "\\)"))
-(message "jira-md: Recognizing abbreviated week day names %s - to localize, customize variable 'calendar-day-abbrev-array'."
-         jira-md/day-abbrev-regex)
 
+(message "jira-md: week day names are %s, abbreviated as %s - to localize, customize variables 'calendar-day-name-[abbrev-]array'."
+         jira-md/day-name-regex jira-md/day-abbrev-regex)
 
 (setq jira-md/keywords
       (list
-        (cons jira-md/email-regex      'font-lock-string-face)        ;; email addresses
-        (cons jira-md/issue-id-regex   'font-lock-function-name-face) ;; jira issues
-        (cons jira-md/user-id-regex    'font-lock-constant-face)      ;; user mentions
-        (cons jira-md/iso-date-regex   'font-lock-keyword-face)       ;; dates
-        (cons jira-md/us-date-regex    'font-lock-keyword-face)       ;; dates
-        (cons jira-md/day-name-regex   'font-lock-keyword-face )      ;; names of days of the week
-        (cons jira-md/day-abbrev-regex 'font-lock-keyword-face )      ;; abbreviated names of days of the week
-        )
+       (cons jira-md/relative-path-regex 'font-lock-builtin-face)       ;; rel path names
+       (cons jira-md/absolute-path-regex 'font-lock-builtin-face)       ;; abs path names
+       (cons jira-md/email-regex         'font-lock-string-face)        ;; email addresses
+       (cons jira-md/issue-id-regex      'font-lock-function-name-face) ;; jira issues
+       (cons jira-md/user-id-regex       'font-lock-constant-face)      ;; user mentions
+       (cons jira-md/iso-date-regex      'font-lock-keyword-face)       ;; dates.
+       (cons jira-md/us-date-regex       'font-lock-keyword-face)       ;; dates
+       (cons jira-md/day-name-regex      'font-lock-keyword-face )      ;; names of days of the week
+       (cons jira-md/day-abbrev-regex    'font-lock-keyword-face )      ;; abbreviated names of days of the week
+       )
       )
 
 
@@ -153,36 +169,32 @@
   )
 
 
+(defun pt-token ()
+  "Gets the text matched by the last thing-at-point-looking-at invocation."
+  (buffer-substring-no-properties (match-beginning 0) (match-end 0)))
+
+(defun jira-md/open-file (filename)
+  (message "jira-md act on path name: opening %s" filename)
+  (find-file filename)
+  )
 
 (defun scarpaz/act-on-element ()
   "Act on the element under the cursor. If it's a JIRA issue number, open it.
    If it's a date, open the calendar on it"
   (interactive)
-
-  (if (thing-at-point-looking-at "^[[:blank:]]*[-+*]")
-      (progn
-        (yafolding-toggle-element)
-        (message "Folding list element"))
-    (let* (
-           (initialpt (point))
-           (ignore    (skip-chars-backward "A-Za-z0-9_/-"))
-           (start     (point))
-           (ignore    (skip-chars-forward "A-Za-z0-9_/-"))
-           (end       (point))
-           (token     (buffer-substring-no-properties start end))
-           )
-    (goto-char initialpt)
-    ;;(message "act on token %s %s" token  (string-match-all jira-md/day-name-regex   token) )
-    (cond
-     ( (string-match-all jira-md/issue-id-regex   token) (org-jira-get-issue  token) )
-     ( (string-match-all jira-md/iso-date-regex   token) (scarpaz/go-to-date  token) )
-     ( (string-match-all jira-md/us-date-regex    token) (scarpaz/go-to-date  token) )
-     ( (string-match-all jira-md/day-name-regex   token) (scarpaz/expand-date token start end) )
-     ( (string-match-all jira-md/day-abbrev-regex token) (scarpaz/expand-date token start end) )
-     )
-    )
-    )
+  (cond
+   ( (thing-at-point-looking-at jira-md/relative-path-regex) (jira-md/open-file   (file-truename (pt-token))))
+   ( (thing-at-point-looking-at jira-md/absolute-path-regex) (jira-md/open-file   (pt-token)))
+   ( (thing-at-point-looking-at jira-md/iso-date-regex     ) (scarpaz/go-to-date  (pt-token)))
+   ( (thing-at-point-looking-at jira-md/us-date-regex      ) (scarpaz/go-to-date  (pt-token)))
+   ( (thing-at-point-looking-at jira-md/day-name-regex     ) (scarpaz/expand-date (pt-token)))
+   ( (thing-at-point-looking-at jira-md/day-abbrev-regex   ) (scarpaz/expand-date (pt-token)))
+   ( (thing-at-point-looking-at "^[[:blank:]]*[-+*]"       ) (yafolding-toggle-element))
+   ( (thing-at-point-looking-at jira-md/issue-id-regex     ) (org-jira-get-issue  (token) ))
+   )
   )
+
+
 
 (defun scarpaz/expand-date (token start end)
   (setq DoW_idx (seq-position calendar-day-name-array token))
