@@ -106,5 +106,5 @@
 (global-set-key (kbd "C-<f11>") 'delete-other-windows) ;; ^F11 duplicates F23
 
 ;; F24
-(global-set-key (kbd "C-, l" )  'scarpaz/transpose-windows) ;; memory aid: on top of F12 that does "other window"
-(global-set-key (kbd "C-<f12>") 'scarpaz/transpose-windows) ;; ^F12 duplicates F24
+(global-set-key (kbd "C-, l" )  'helm-mini) ;; memory aid: on top of F12 that does "other window"
+(global-set-key (kbd "C-<f12>") 'helm-mini) ;; ^F12 duplicates F24
