@@ -16,11 +16,11 @@ Where to start
 
 If you just checked out this project and only see README.md... you are right.
 The meat of the project is in "hidden" files `.emacs` and `.emacs.d`.
-I aim toward a goal state in which my `.emacs` is just a list of loads similar to:
+I aim toward a goal state in which my `.emacs` is just a loads similar to:
 
-    (load "~/.emacs.d/scarpaz-edit-prefs.el")
+    (load "~/.emacs.d/scarpaz-main.el")
 
-and the contents of `.emacs.d` contain the actual settings, grouped together by topic.
+and directory `.emacs.d` contains the actual settings, grouped together by topic.
 To keep emacs's actual startup files synchronized with the repo, it's not a crazy idea to
 make them symbolic links, such as:
 
