@@ -42,10 +42,13 @@
 
 (global-set-key (kbd "C-, z" )  'dabbrev-expand)         ;; Key between LSHIFT and Z - use autocompletion
 
-(global-set-key (kbd "C-, 9" )  'calendar)             ;; NumKeypad rightmost column, second row
+(global-set-key (kbd "C-, 9" )  'calendar)               ;; Blank NumKeypad key, rightmost column, second row - toggle calendar window
 (eval-after-load "calendar"
   `(progn
      (define-key calendar-mode-map (kbd "C-, 9") 'calendar-exit)))
+
+(global-set-key (kbd "C-< 9" ) 'scarpaz/insert-today)    ;; Shift + same key above - insert today's date
+
 
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
 ;; EXTRA_F10 is not available for binding - I remap it to Hyper/Windows/GUI
