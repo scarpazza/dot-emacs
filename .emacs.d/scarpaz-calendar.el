@@ -103,7 +103,10 @@
   (calendar-cursor-holidays)
   )
 
-
+(defun scarpaz/insert-today (&optional arg)
+  (interactive "p")
+  (insert (calendar-date-string (calendar-current-date) ))
+  )
 
 (eval-after-load "calendar"
   `(progn
