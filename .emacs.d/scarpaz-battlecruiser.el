@@ -8,6 +8,9 @@
 ;; M122 keyboard, I'm binding the same function associated each key in F13 ... F24 also to combination
 ;; Control-F<n-12>, i.e., F13 does the same thing as ^F1, F14 does the same as ^F2, and so on.)
 ;;
+;; This file *only* covers key bindings associated with the exotic extra keys of the IBM M122.
+;; My normal keybindings are in https://github.com/scarpazza/dot-emacs/blob/main/.emacs.d/scarpaz-key-bindings.el
+;; and their discussion is at https://github.com/scarpazza/dot-emacs#key-bindings
 
 (defun scarpaz/unassigned ()
   (interactive) (message "Unassigned battlecruiser key code") )
