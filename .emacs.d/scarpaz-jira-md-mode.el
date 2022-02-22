@@ -329,11 +329,14 @@ The input is the date string, unparsed."
 
 ;;;###autoload
 (add-hook 'markdown-mode-hook 'jira-md-mode)
+(add-hook 'markdown-mode-hook 'yafolding-mode) ;; I write deep and long itemized lists and need convenient ways to collapse them.
 
+(add-hook 'markdown-mode-hook '(lambda ()
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)))
 
-(add-hook 'markdown-mode-hook 'yafolding-mode)
-;; I write deep and long itemize lists and need to collapse them.
-
+(set-face-background 'whitespace-space "blue" )
+(set-face-background 'whitespace-indentation "gray14" )
 
 (defun scarpaz/calendar-mark-visible-date (date &optional mark)
   ;; Lazy copy of calendar-mark-visible-date, but operating on my pop-up buffer.
