@@ -56,11 +56,15 @@
 (global-set-key (kbd "C-, 1" )  'keyboard-escape-quit)           ;; EXTRA_F2
 (global-set-key (kbd "C-, 2" )  'kill-rectangle)                 ;; EXTRA_F3
 (global-set-key (kbd "C-, 3" )  'yank-rectangle)                 ;; EXTRA_F4
-(global-set-key (kbd "C-, 4" )  'comment-region)                 ;; EXTRA_F5
-(global-set-key (kbd "C-, 5" )  'uncomment-region)               ;; EXTRA_F6
-(global-set-key (kbd "C-, 6" )  'display-line-numbers-mode)      ;; EXTRA_F7
-(global-set-key (kbd "C-, 7" )  'whitespace-mode)                ;; EXTRA_F8
-(global-set-key (kbd "C-, 8" )  'scarpaz/toggle-line-spacing)    ;; EXTRA_F9
+
+(global-set-key (kbd "C-, 4" ) 'markdown-promote)                ;; EXTRA_F5
+(global-set-key (kbd "C-, 5" ) 'markdown-demote)                 ;; EXTRA_F6
+
+(global-set-key (kbd "C-, 6" ) 'display-line-numbers-mode)       ;; EXTRA_F7
+(global-set-key (kbd "C-< 6" ) 'whitespace-mode)                 ;; Shift + EXTRA_F7
+(global-set-key (kbd "C-, 7" ) 'comment-region)                  ;; EXTRA_F8
+(global-set-key (kbd "C-< 7" ) 'uncomment-region)                ;; Shift + EXTRA_F8
+(global-set-key (kbd "C-, 8" ) 'scarpaz/toggle-line-spacing)     ;; EXTRA_F9
 
 ;; "Rule" key, i.e., the key in the middle of the arrow keys
 (global-set-key (kbd "C-, 0" )  'er/expand-region)                   ;; "Rule"       -> expand region
