@@ -96,6 +96,8 @@
   (text-mode . whitespace-mode)
   :custom
   (whitespace-style '(face empty indentation::space tab trailing)))
+(set-face-background 'whitespace-space "blue" )
+(set-face-background 'whitespace-indentation "gray14" )
 
 (require 'hl-line)
 (add-hook 'prog-mode-hook #'hl-line-mode)
