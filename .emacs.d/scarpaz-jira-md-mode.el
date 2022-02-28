@@ -335,9 +335,6 @@ The input is the date string, unparsed."
   (setq indent-tabs-mode nil)
   (setq tab-width 4)))
 
-(set-face-background 'whitespace-space "blue" )
-(set-face-background 'whitespace-indentation "gray14" )
-
 (defun scarpaz/calendar-mark-visible-date (date &optional mark)
   ;; Lazy copy of calendar-mark-visible-date, but operating on my pop-up buffer.
   ;; This is ugly.
