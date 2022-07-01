@@ -103,8 +103,17 @@
 (add-hook 'text-mode-hook #'hl-line-mode)
 (set-face-attribute 'hl-line nil :background "gray21")
 
+
 (require 'helm)
 (set-face-attribute 'helm-source-header nil :background "gray30")
+(custom-set-variables
+'(helm-follow-mode-persistent t))
+
+(require 'helm-ag)
+(custom-set-variables
+  '(helm-ag-command-option "--ignore-case")
+  '(helm-ag-use-agignore t))
+
 
 (use-package which-key
   :custom
