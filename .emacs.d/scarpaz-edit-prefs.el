@@ -5,9 +5,6 @@
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
 (helm-mode)
 
-;; FAILS under older emacs
-;; (eval-after-load 'helm (lambda () (set-face-attribute 'helm-source-header nil :background "gray30" :font (old-face-attribute))))
-
 ;;(column-number-mode)
 
 
@@ -106,6 +103,8 @@
 (add-hook 'text-mode-hook #'hl-line-mode)
 (set-face-attribute 'hl-line nil :background "gray21")
 
+(require 'helm)
+(set-face-attribute 'helm-source-header nil :background "gray30")
 
 (use-package which-key
   :custom
