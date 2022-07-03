@@ -75,6 +75,9 @@ benefit to remove them.
   it hardly makes sense to keep these bindings in place. I reclaim them.
   In the specific case of `C-v`, I go back to CUA land, making it another paste (`yank`).
 
+* M122 bindings. I like big keyboards. My daily driver is a vintage IBM [122-key Model M "Battlecruiser"](https://github.com/scarpazza/battlecruiser). I post emacs bindings for the F13-F24 keys, plust the
+extra function keys. Yes, I use the extra function keys for useful things, usually revision control
+via magit; yes, I do remember what they do without looking them up (that's because they are organized consistently with the F1-F12 assignments); and yes, they are easier to remember than key sequences.
 
 ### Helm key bindings
 
