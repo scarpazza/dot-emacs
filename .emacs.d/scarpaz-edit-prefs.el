@@ -46,13 +46,6 @@
 (setq-default recent-save-file "~/.emacs.d/recent-files")
 
 
-
-(when (window-system)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1)
-  )
-
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -122,3 +115,9 @@
   :config
   (which-key-mode)
   (which-key-setup-minibuffer))
+
+(when (window-system)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1)
+  )
