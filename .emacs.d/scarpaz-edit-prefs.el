@@ -54,16 +54,17 @@
 
 (use-package all-the-icons)
 
-(use-package all-the-icons-dired
-  :after all-the-icons
-  :hook (dired-mode . all-the-icons-dired-mode))
+; (use-package all-the-icons-dired
+;   :after all-the-icons
+;   :hook (dired-mode . all-the-icons-dired-mode))
 
 
 (use-package doom-modeline
+  :ensure t
   :config (doom-modeline-mode))
 
-(require 'expand-region)
 (use-package expand-region
+  :ensure t
   :bind ("C-=" . er/expand-region))
 
 (use-package rainbow-delimiters
@@ -71,6 +72,7 @@
   (prog-mode . rainbow-delimiters-mode))
 
 (use-package magit
+  :ensure t
   :diminish magit-auto-revert-mode
   :diminish auto-revert-mode
   :bind (("C-c g" . #'magit-status))
@@ -102,13 +104,15 @@
 (custom-set-variables
 '(helm-follow-mode-persistent t))
 
-(require 'helm-ag)
+(use-package helm-ag
+  :ensure t)
 (custom-set-variables
   '(helm-ag-command-option "--ignore-case")
   '(helm-ag-use-agignore t))
 
 
 (use-package which-key
+  :ensure t
   :custom
   (which-key-setup-side-window-bottom)
   (which-key-enable-extended-define-key t)
