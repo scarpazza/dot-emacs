@@ -6,16 +6,16 @@
 ;;
 ;;
 
-;; Replace existing features with more advanced, helm-based alternatives
-
-(require 'helm)
-(require 'helm-config)
 (require 'yafolding)
 
 
-
+;; Replace existing features with more advanced, helm-based alternatives
+(require 'helm)
+(require 'helm-swoop)
+(require 'helm-config)
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
+(global-set-key (kbd "C-s")     'helm-swoop)
 (global-set-key (kbd "M-x")     'helm-M-x)
 (global-set-key (kbd "M-y")     'helm-show-kill-ring)
 
@@ -135,9 +135,6 @@
 (define-key helm-buffer-map (kbd "DEL") 'helm-buffer-run-kill-persistent)
 (define-key helm-buffer-map (kbd "<backspace>") 'helm-buffer-run-kill-persistent)
 (define-key helm-buffer-map (kbd "<deletechar>") 'helm-buffer-run-kill-persistent)
-
-
-
 
 
 

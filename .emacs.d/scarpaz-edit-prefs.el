@@ -3,6 +3,11 @@
 (global-display-line-numbers-mode t)
 (global-font-lock-mode t)
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
+
+(use-package helm
+  :ensure t
+  )
+
 (helm-mode)
 
 ;;(column-number-mode)
@@ -110,6 +115,8 @@
   '(helm-ag-command-option "--ignore-case")
   '(helm-ag-use-agignore t))
 
+(use-package helm-swoop
+  :ensure t)
 
 (use-package which-key
   :ensure t
