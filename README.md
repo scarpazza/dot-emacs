@@ -75,9 +75,14 @@ benefit to remove them.
   it hardly makes sense to keep these bindings in place. I reclaim them.
   In the specific case of `C-v`, I go back to CUA land, making it another paste (`yank`).
 
-* M122 bindings. I like big keyboards. My daily driver is a vintage IBM [122-key Model M "Battlecruiser"](https://github.com/scarpazza/battlecruiser). I post emacs bindings for the F13-F24 keys, plust the
-extra function keys. Yes, I use the extra function keys for useful things, usually revision control
-via magit; yes, I do remember what they do without looking them up (that's because they are organized consistently with the F1-F12 assignments); and yes, they are easier to remember than key sequences.
+* M122 bindings. I like big keyboards. My daily driver is a vintage
+  IBM [122-key Model M "Battlecruiser"](https://github.com/scarpazza/battlecruiser). I post
+  emacs bindings for the F13-F24 keys, plus the extra function
+  keys. Yes, I use the extra function keys for useful things, usually
+  revision control via magit; yes, I do remember what they do without
+  looking them up (that's because they are organized consistently with
+  the F1-F12 assignments); and yes, they are easier to remember than
+  key sequences.
 
 ### Helm key bindings
 
@@ -89,6 +94,23 @@ via magit; yes, I do remember what they do without looking them up (that's becau
   if they normally perform different functions (on a Mac, the key labeled
   delete is really a backspace).
 
+* I bind F24 (and C-F12, for when I am away from the battleship)
+  to `helm-mini`. That's an extremely useful command to have a one
+  keystroke away.  F24 is also the top rightmost key in that corner of
+  the battleship, so muscle memory is easy to build on it.
+  
+* I choose the following helm replacements for existing emacs functions:
+
+| Key     | New binding           | Commentary                                                                                |
+|---------|-----------------------|-------------------------------------------------------------------------------------------|
+| `C-x b` | `helm-mini`           | That's a way better buffer manager than emacs' buffer list                                |
+| `C-s`   | `helm-swoop`          | Perform incremental search all through the file rather than only on the first occurrence. |
+| `M-y`   | `helm-show-kill-ring` | Display the entire kill ring rather than popping one entry at a time from it.             |
+| `F3`    | `helm-find-files`     | A way better find file mode.                                                              |
+|         |                       |                                                                                           |
+|         |                       |                                                                                           |
+|         |                       |                                                                                           |
+  
 
 Calendar
 ---------
