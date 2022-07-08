@@ -80,8 +80,8 @@
 (global-set-key (kbd "C-<f2>")  'magit-stage-file)       ;; ^F2 duplicates F14
 
 ;; F15
-(global-set-key (kbd "C-, c" )  'magit-file-dispatch)
-(global-set-key (kbd "C-<f3>" ) 'magit-file-dispatch)
+(global-set-key (kbd "C-, c" )  'helm-ag) ;; bring up the helm interface to ag "the silver searcher"
+(global-set-key (kbd "C-<f3>" ) 'helm-ag)
 
 ;; F16
 (global-set-key (kbd "C-, d" )  'magit-diff-buffer-file) ;; memory aid "show me the edits" is right above F4 (toggle edit)
