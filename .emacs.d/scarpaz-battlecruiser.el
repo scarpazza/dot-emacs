@@ -62,7 +62,7 @@
 
 (global-set-key (kbd "C-, 6" ) 'display-line-numbers-mode)       ;; EXTRA_F7
 (global-set-key (kbd "C-< 6" ) 'whitespace-mode)                 ;; Shift + EXTRA_F7
-(global-set-key (kbd "C-, 7" ) 'comment-region)                  ;; EXTRA_F8
+(global-set-key (kbd "C-, 7" ) 'comment-dwim)                    ;; EXTRA_F8
 (global-set-key (kbd "C-< 7" ) 'uncomment-region)                ;; Shift + EXTRA_F8
 (global-set-key (kbd "C-, 8" ) 'scarpaz/toggle-line-spacing)     ;; EXTRA_F9
 
