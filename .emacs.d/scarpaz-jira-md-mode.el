@@ -25,6 +25,8 @@
 ;;     it looks the ticket up via org-jira;
 ;;   - for dates (ISO or US),
 ;;     it opens the calendar on that date.
+;;   - for expressions ending in an equal sign (=),
+;;     evaluate them via python
 ;;
 ;; It distinguishes between ISO and US dates.  I chose not to
 ;; recognize European-style dates because they can't be distinguished
@@ -105,7 +107,10 @@
   "Regular expression describing relative pathnames. Change this if you need to recognize stranger pathnames."
   :type 'string  :require 'jira-md-mode  :group 'jira-md)
 
-
+(defcustom jira-md/python-interpreter
+  "/usr/bin/python"
+  "Path to the python interpreter, used to evaluate math expressions."
+  :type 'string  :require 'jira-md-mode  :group 'jira-md)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -178,23 +183,22 @@
   (find-file filename)
   )
 
-(defun jira-md/calc-here ()
-  "Evaluate via calc-embedded the expression at point. Does it twice to get out of calc mode."
-  (message "calc-here %s %s" (match-beginning 0) (match-end 0))
-  (goto-char (match-end 0))
-  (message "calling" (match-beginning 0) (match-end 0))
-  (call-interactively #'calc-embedded)
-  (call-interactively #'calc-embedded)
-  (end-of-line)
+(defun jira-md/eval-via-python (expr)
+  (string-match "[[:blank:]]+=[[:blank:]]*" expr)
+  (setq cleanexpr (substring expr 0 (match-beginning 0) ))
+  (setq result (shell-command-to-string (concat jira-md/python-interpreter " -c 'from math import *; print(" cleanexpr ")'")))
+  ; skip the new line character at the end
+  (setq result (substring result 0 (- (length result) 1)))
+  (message "result from python: %s" result)
+  (insert result)
   )
-
 
 (defun scarpaz/act-on-element ()
   "Act on the element under the cursor. If it's a JIRA issue number, open it.
    If it's a date, open the calendar on it"
   (interactive)
   (cond
-   ( (thing-at-point-looking-at "=>[[:blank:]]*")            (jira-md/calc-here ))
+   ( (thing-at-point-looking-at ".*[[:blank:]]+=[[:blank:]]*") (jira-md/eval-via-python (pt-token) ))
    ( (thing-at-point-looking-at jira-md/relative-path-regex) (jira-md/open-file   (file-truename (pt-token))))
    ( (thing-at-point-looking-at jira-md/absolute-path-regex) (jira-md/open-file   (pt-token)))
    ( (thing-at-point-looking-at jira-md/iso-date-regex     ) (scarpaz/go-to-date  (pt-token)))
