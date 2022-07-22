@@ -71,6 +71,7 @@
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
+(require 'expand-region) ;; needed for byte compilation
 
 (use-package rainbow-delimiters
   :hook
@@ -85,6 +86,8 @@
   (magit-repository-directories '(("~/" . 1)))
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes))
+
+(require 'magit) ;; needed for byte compilation
 
 (use-package whitespace
   :ensure nil

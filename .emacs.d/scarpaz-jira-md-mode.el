@@ -178,11 +178,23 @@
   (find-file filename)
   )
 
+(defun jira-md/calc-here ()
+  "Evaluate via calc-embedded the expression at point. Does it twice to get out of calc mode."
+  (message "calc-here %s %s" (match-beginning 0) (match-end 0))
+  (goto-char (match-end 0))
+  (message "calling" (match-beginning 0) (match-end 0))
+  (call-interactively #'calc-embedded)
+  (call-interactively #'calc-embedded)
+  (end-of-line)
+  )
+
+
 (defun scarpaz/act-on-element ()
   "Act on the element under the cursor. If it's a JIRA issue number, open it.
    If it's a date, open the calendar on it"
   (interactive)
   (cond
+   ( (thing-at-point-looking-at "=>[[:blank:]]*")            (jira-md/calc-here ))
    ( (thing-at-point-looking-at jira-md/relative-path-regex) (jira-md/open-file   (file-truename (pt-token))))
    ( (thing-at-point-looking-at jira-md/absolute-path-regex) (jira-md/open-file   (pt-token)))
    ( (thing-at-point-looking-at jira-md/iso-date-regex     ) (scarpaz/go-to-date  (pt-token)))
