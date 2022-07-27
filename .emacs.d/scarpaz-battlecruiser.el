@@ -12,6 +12,8 @@
 ;; My normal keybindings are in https://github.com/scarpazza/dot-emacs/blob/main/.emacs.d/scarpaz-key-bindings.el
 ;; and their discussion is at https://github.com/scarpazza/dot-emacs#key-bindings
 
+(require 'jira-md-mode)
+
 (defun scarpaz/unassigned ()
   (interactive) (message "Unassigned battlecruiser key code") )
 
@@ -53,7 +55,11 @@
 ;; EXTRA_F1  is not available for binding - I remap it to Esc
 ;; EXTRA_F10 is not available for binding - I remap it to Hyper/Windows/GUI
 
-(global-set-key (kbd "C-, 1" )  'keyboard-escape-quit)           ;; EXTRA_F2
+
+(global-set-key (kbd "C-, 1" )  'yafolding-toggle-all)           ;; EXTRA_F2
+(global-set-key (kbd "C-< 1" )  'yafolding-hide-all)             ;; Shift+EXTRA_F2
+
+;; (global-set-key (kbd "C-, 1" )  'keyboard-escape-quit)           ;; EXTRA_F2 - i no longer like this
 (global-set-key (kbd "C-, 2" )  'kill-rectangle)                 ;; EXTRA_F3
 (global-set-key (kbd "C-, 3" )  'yank-rectangle)                 ;; EXTRA_F4
 
@@ -67,33 +73,35 @@
 (global-set-key (kbd "C-, 8" ) 'scarpaz/toggle-line-spacing)     ;; EXTRA_F9
 
 ;; "Rule" key, i.e., the key in the middle of the arrow keys
-(global-set-key (kbd "C-, 0" )  'er/expand-region)                   ;; "Rule"       -> expand region
-(global-set-key (kbd "C-< 0" )  'er/contract-region)                 ;; Shift-"RULE" -> contract region
+(global-set-key (kbd "C-, 0" )  'scarpaz/act-on-element)         ;; "Rule"       -> expand region
+
+;;(global-set-key (kbd "C-, 0" )  'er/expand-region)                   ;; "Rule"       -> expand region
+;;(global-set-key (kbd "C-< 0" )  'er/contract-region)                 ;; Shift-"RULE" -> contract region
 
 
 ;; F13
-(global-set-key (kbd "C-, a" )  'magit-wip-log-current)   ;; "give me one window" - memory aid: it's on top of F1
+(global-set-key (kbd "C-, a" )  'magit-wip-log-current)   ;; memory aid: "HELP me understand what's going on": it's on top of F1 - help
 (global-set-key (kbd "C-<f1>")  'magit-wip-log-current)   ;; ^F1 duplicates F13
 
 ;; F14
-(global-set-key (kbd "C-, b" )  'magit-stage-file)       ;; memory aid: it's a stronger save and is on top of F2 (save)
+(global-set-key (kbd "C-, b" )  'magit-stage-file)       ;; memory aid: it's a stronger for of SAVE; it's on top of F2 (save)
 (global-set-key (kbd "C-<f2>")  'magit-stage-file)       ;; ^F2 duplicates F14
 
 ;; F15
-(global-set-key (kbd "C-, c" )  'helm-ag) ;; bring up the helm interface to ag "the silver searcher"
+(global-set-key (kbd "C-, c" )  'helm-ag) ;; bring up the helm interface to ag "the silver searcher"; it's a broader form of load; F3 is load
 (global-set-key (kbd "C-<f3>" ) 'helm-ag)
 
 ;; F16
-(global-set-key (kbd "C-, d" )  'magit-diff-buffer-file) ;; memory aid "show me the edits" is right above F4 (toggle edit)
-(global-set-key (kbd "C-<f4>")  'magit-diff-buffer-file) ;; ^F4 duplicates F16
+(global-set-key (kbd "C-, d" )  'magit-diff-buffer-file)      ;; memory aid "show me the edits" is right above F4 (toggle edit)
+(global-set-key (kbd "C-<f4>")  'magit-diff-buffer-file)      ;; ^F4 duplicates F16
 
 ;; F17
-(global-set-key (kbd "C-, e" )  'scarpaz/magit-toggle-blame)
-(global-set-key (kbd "C-<f5>" ) 'scarpaz/magit-toggle-blame)
+(global-set-key (kbd "C-, e" )  'scarpaz/magit-toggle-blame)  ;; "Show me the refreshes" - on top of F5 = refresh
+(global-set-key (kbd "C-<f5>" ) 'scarpaz/magit-toggle-blame)  ;; ^F5 duplicates F17
 
 ;; F18
-(global-set-key (kbd "C-, f" )  'eshell)                    ;;
-(global-set-key (kbd "C-<f6>" ) 'eshell)                    ;; ^F6 duplicates F18
+(global-set-key (kbd "C-, f" )  'eshell)                      ;;
+(global-set-key (kbd "C-<f6>" ) 'eshell)                      ;; ^F6 duplicates F18
 
 ;; F19
 (global-set-key (kbd "C-, g" )  'flyspell-correct-word-before-point) ;; memory aid: it's just above F7, that does spelling
@@ -112,8 +120,8 @@
 (global-set-key (kbd "C-<f10>") 'next-buffer)               ;; ^F10 duplicates F22
 
 ;; F23
-(global-set-key (kbd "C-, k" )  'delete-other-windows) ;; memory aid - spacing is a focus aid like fullscreen is
-(global-set-key (kbd "C-<f11>") 'delete-other-windows) ;; ^F11 duplicates F23
+(global-set-key (kbd "C-, k" )  'delete-other-windows)      ;; memory aid - spacing is a focus aid like fullscreen is
+(global-set-key (kbd "C-<f11>") 'delete-other-windows)      ;; ^F11 duplicates F23
 
 ;; F24
 (global-set-key (kbd "C-, l" )  'helm-mini) ;; memory aid: on top of F12 that does "other window"
