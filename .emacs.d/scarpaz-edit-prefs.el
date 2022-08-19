@@ -121,6 +121,9 @@
 (use-package helm-swoop
   :ensure t)
 
+# do not prepopulate swoop search term with the one at point
+(setq helm-swoop-pre-input-function (lambda () nil)) 
+
 (use-package which-key
   :ensure t
   :custom
