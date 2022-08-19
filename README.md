@@ -107,9 +107,6 @@ benefit to remove them.
 | `C-s`   | `helm-swoop`          | Perform incremental search all through the file rather than only on the first occurrence. |
 | `M-y`   | `helm-show-kill-ring` | Display the entire kill ring rather than popping one entry at a time from it.             |
 | `F3`    | `helm-find-files`     | A way better find file mode.                                                              |
-|         |                       |                                                                                           |
-|         |                       |                                                                                           |
-|         |                       |                                                                                           |
   
 
 Calendar
