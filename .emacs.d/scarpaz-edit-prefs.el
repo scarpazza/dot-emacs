@@ -50,7 +50,7 @@
 (use-package recentf
   :init
   (setq
-    recentf-save-file "~/.cache/emacs/recentf"
+    recentf-save-file "~/.emacs.d/recentf"
     recentf-max-saved-items 10000
     recentf-max-menu-items 5000
     )
