@@ -12,7 +12,7 @@
 ;; Replace existing features with more advanced, helm-based alternatives
 (require 'helm)
 (require 'helm-swoop)
-(require 'helm-config)
+
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
 (global-set-key (kbd "C-s")     'helm-swoop)
