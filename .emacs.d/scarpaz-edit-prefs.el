@@ -1,14 +1,21 @@
+(add-to-list 'package-archives
+	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 (show-paren-mode 1)
 (delete-selection-mode t)
 (global-display-line-numbers-mode t)
 (global-font-lock-mode t)
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
 
-(use-package helm
-  :ensure t
-  )
-
+(use-package org-jira  :ensure t)
+(use-package yafolding   :ensure t)
+(use-package helm  :ensure t)
+(use-package helm-core  :ensure t)
 (helm-mode)
+
+
+(use-package doom-themes :ensure t)
+
 
 ;;(column-number-mode)
 
@@ -129,8 +136,8 @@
 (use-package helm-swoop
   :ensure t)
 
-# do not prepopulate swoop search term with the one at point
-(setq helm-swoop-pre-input-function (lambda () nil)) 
+;; do not prepopulate swoop search term with the one at point
+(setq helm-swoop-pre-input-function (lambda () nil))
 
 (use-package which-key
   :ensure t
