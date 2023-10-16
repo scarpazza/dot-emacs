@@ -1,9 +1,11 @@
 (add-to-list 'package-archives
-	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+	     '("melpa" . "https://melpa.org/packages/") t)
 
 (show-paren-mode 1)
 (delete-selection-mode t)
-(global-display-line-numbers-mode t)
+(global-display-line-numbers-mode 0)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 (global-font-lock-mode t)
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
 
@@ -126,6 +128,8 @@
 (set-face-attribute 'helm-source-header nil :background "gray30")
 (custom-set-variables
 '(helm-follow-mode-persistent t))
+
+
 
 (use-package helm-ag
   :ensure t)
