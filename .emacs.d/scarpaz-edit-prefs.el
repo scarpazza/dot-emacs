@@ -68,6 +68,8 @@
 (use-package lsp-mode)
 (use-package lsp-treemacs)
 (use-package org-jira)
+(use-package org-modern)
+(use-package ox-gfm)
 (use-package projectile)
 (use-package which-key)
 (use-package yafolding)
@@ -155,6 +157,8 @@
 
 (setq org-todo-keywords
   '((sequence "BACKLOG" "TODO" "IN_PROGRESS" "IN_REVIEW" "WAITING" "DONE" "DECLINED")))
+
+(add-hook 'org-mode-hook 'org-modern-mode)
 
 (when (window-system)
   (tool-bar-mode -1)
