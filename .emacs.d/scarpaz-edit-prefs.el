@@ -12,46 +12,66 @@
 ;;(column-number-mode)
 
 (setq
- case-fold-search          nil         ;; search should be case-sensitive by default
- compilation-read-command  nil         ;; no need to prompt for the read command _every_ times
- compilation-scroll-output t           ;; always scroll
- default-directory         "~/"
- doom-theme                'doom-peacock
- frame-resize-pixelwise    t
- fill-column               120
- gc-cons-threshold         10000000
+ case-fold-search              nil          ;; search should be case-sensitive by default
+ company-idle-delay            0.0
+ company-minimum-prefix-length 1
+ compilation-read-command      nil          ;; no need to prompt for the read command _every_ times
+ compilation-scroll-output     t            ;; always scroll
+ custom-safe-themes            t
+ default-directory             "~/"
+ doom-theme                    'doom-peacock
+ fill-column                   120
+ frame-resize-pixelwise        t
+ gc-cons-threshold             (* 100 1024 1024)
  helm-ff-allow-non-existing-file-at-point t ;; allow entering selections not listed
  helm-ff-file-name-history-use-recentf t
- inhibit-startup-screen    t           ;; No need to see GNU agitprop.
- initial-scratch-message   nil         ;; No need to remind me what a scratch buffer is.
- kill-whole-line           t           ;; Let C-k delete the whole line.
- lexical-binding t
+ help-window-select            t           ;; Focus new help windows when opened
+ indent-tabs-mode              nil         ;; Do not use tab characters to indent
+ inhibit-startup-screen        t           ;; No need to see GNU agitprop.
+ initial-scratch-message       nil         ;; No need to remind me what a scratch buffer is.
+ kill-whole-line               t           ;; Let C-k delete the whole line.
+ lexical-binding               t
+ lsp-idle-delay                0.1         ;; clangd is fast
  magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1 ;; magit always full screen
- mark-even-if-inactive     nil         ;; Fix undo in commands affecting the mark.
- markdown-header-scaling   t
- mouse-drag-copy-region    t           ;; mouse selection copies text to clipboard automatically
- mouse-wheel-follow-mouse  t           ;; wheel scrolls the window you are hovering, even if inactive
- mouse-wheel-scroll-amount '(1 ((shift) . 5)) ;; smooth scrolling by mouse
- require-final-newline     t
- ring-bell-function        'ignore     ;; Never ding at me, ever.
- scroll-error-top-bottom   t           ;; allow scrolling to very top/bottom of file
- show-trailing-whitespace  t
- use-dialog-box            nil         ;; Prompts should go in the minibuffer, not in a GUI.
- use-package-always-ensure t
- custom-safe-themes        t
- help-window-select        t           ;; Focus new help windows when opened
- indent-tabs-mode          nil         ;; Do not use tab characters to indent
- tab-width                 4
- window-combination-resize t           ;; Resize windows proportionally
+ mark-even-if-inactive         nil         ;; Fix undo in commands affecting the mark.
+ markdown-header-scaling       t
+ mouse-drag-copy-region        t           ;; mouse selection copies text to clipboard automatically
+ mouse-wheel-follow-mouse      t           ;; wheel scrolls the window you are hovering, even if inactive
+ mouse-wheel-scroll-amount     '(1 ((shift) . 5)) ;; smooth scrolling by mouse
+ org-agenda-files              '("~/org")
+ org-support-shift-select      t           ;; I want shift-arrows for selection
+ read-process-output-max       (* 1024 1024)
+ require-final-newline         t
+ ring-bell-function            'ignore     ;; Never ding at me, ever.
+ scroll-error-top-bottom       t           ;; allow scrolling to very top/bottom of file
+ show-trailing-whitespace      t
+ tab-width                     4
+ treemacs-space-between-root-nodes nil
+ use-dialog-box                nil         ;; Prompts should go in the minibuffer, not in a GUI.
+ use-package-always-ensure     t
+ window-combination-resize     t           ;; Resize windows proportionally
  )
 
-(use-package org-jira)
-(use-package yafolding)
-(use-package helm)
-(use-package helm-core)
+
 (use-package all-the-icons)
+(use-package avy)
+(use-package company)
+(use-package dap-mode)
 (use-package doom-themes)
+(use-package flycheck)
+(use-package helm)
 (use-package helm-ag)
+(use-package helm-core)
+(use-package helm-lsp)
+(use-package helm-xref)
+(use-package hydra)
+(use-package lsp-mode)
+(use-package lsp-treemacs)
+(use-package org-jira)
+(use-package projectile)
+(use-package which-key)
+(use-package yafolding)
+(use-package yasnippet)
 
 (helm-mode)
 
@@ -83,8 +103,7 @@
 (require 'expand-region) ;; needed for byte compilation
 
 (use-package rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package magit
   :diminish magit-auto-revert-mode
@@ -133,8 +152,21 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
+
+(setq org-todo-keywords
+  '((sequence "BACKLOG" "TODO" "IN_PROGRESS" "IN_REVIEW" "WAITING" "DONE" "DECLINED")))
+
 (when (window-system)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1)
   )
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (require 'dap-cpptools)
+  (yas-global-mode))
