@@ -9,18 +9,7 @@
 (global-font-lock-mode t)
 (electric-pair-mode 0) ;; if I want to type a paren, I'll type it myself
 
-(use-package org-jira  :ensure t)
-(use-package yafolding   :ensure t)
-(use-package helm  :ensure t)
-(use-package helm-core  :ensure t)
-(helm-mode)
-
-
-(use-package doom-themes :ensure t)
-
-
 ;;(column-number-mode)
-
 
 (setq
  case-fold-search          nil         ;; search should be case-sensitive by default
@@ -56,6 +45,16 @@
  window-combination-resize t           ;; Resize windows proportionally
  )
 
+(use-package org-jira)
+(use-package yafolding)
+(use-package helm)
+(use-package helm-core)
+(use-package all-the-icons)
+(use-package doom-themes)
+(use-package helm-ag)
+
+(helm-mode)
+
 (use-package recentf
   :init
   (setq
@@ -67,26 +66,19 @@
   (run-at-time nil (* 5 60) 'recentf-save-list)
 )
 
-
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :init (setq markdown-command "multimarkdown"))
 
-
-(use-package all-the-icons)
-
-; (use-package all-the-icons-dired
-;   :after all-the-icons
-;   :hook (dired-mode . all-the-icons-dired-mode))
+(use-package all-the-icons-dired
+   :after all-the-icons
+   :hook (dired-mode . all-the-icons-dired-mode))
 
 
 (use-package doom-modeline
-  :ensure t
   :config (doom-modeline-mode))
 
 (use-package expand-region
-  :ensure t
   :bind ("C-=" . er/expand-region))
 (require 'expand-region) ;; needed for byte compilation
 
@@ -95,7 +87,6 @@
   (prog-mode . rainbow-delimiters-mode))
 
 (use-package magit
-  :ensure t
   :diminish magit-auto-revert-mode
   :diminish auto-revert-mode
   :bind (("C-c g" . #'magit-status))
@@ -107,7 +98,6 @@
 (require 'magit) ;; needed for byte compilation
 
 (use-package whitespace
-  :ensure nil
   :hook
   (prog-mode . whitespace-mode)
   (text-mode . whitespace-mode)
@@ -123,28 +113,19 @@
 (add-hook 'text-mode-hook #'hl-line-mode)
 (set-face-attribute 'hl-line nil :background "gray21")
 
-
 (require 'helm)
 (set-face-attribute 'helm-source-header nil :background "gray30")
 (custom-set-variables
 '(helm-follow-mode-persistent t))
 
-
-
-(use-package helm-ag
-  :ensure t)
 (custom-set-variables
   '(helm-ag-command-option "--ignore-case")
   '(helm-ag-use-agignore t))
-
-(use-package helm-swoop
-  :ensure t)
 
 ;; do not prepopulate swoop search term with the one at point
 (setq helm-swoop-pre-input-function (lambda () nil))
 
 (use-package which-key
-  :ensure t
   :custom
   (which-key-setup-side-window-bottom)
   (which-key-enable-extended-define-key t)
