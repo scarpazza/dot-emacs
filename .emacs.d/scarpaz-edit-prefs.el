@@ -11,6 +11,8 @@
 
 ;;(column-number-mode)
 
+
+
 (setq
  case-fold-search              nil          ;; search should be case-sensitive by default
  company-idle-delay            0.0
@@ -52,28 +54,29 @@
  window-combination-resize     t           ;; Resize windows proportionally
  )
 
-
 (use-package all-the-icons)
-(use-package avy)
-(use-package company)
-(use-package dap-mode)
-(use-package doom-themes)
-(use-package flycheck)
-(use-package helm)
-(use-package helm-ag)
-(use-package helm-core)
-(use-package helm-lsp)
-(use-package helm-xref)
-(use-package hydra)
-(use-package lsp-mode)
-(use-package lsp-treemacs)
-(use-package org-jira)
-(use-package org-modern)
-(use-package ox-gfm)
-(use-package projectile)
-(use-package which-key)
-(use-package yafolding)
-(use-package yasnippet)
+(use-package avy          )
+(use-package company      )
+(use-package dap-mode     )
+(use-package doom-themes  )
+(use-package flycheck     )
+(use-package helm         )
+(use-package helm-files   )
+(use-package helm-ag      )
+(use-package helm-core    )
+(use-package helm-lsp     )
+(use-package helm-swoop   )
+(use-package helm-xref    )
+(use-package hydra        )
+(use-package lsp-mode     )
+(use-package lsp-treemacs )
+(use-package org-jira     )
+(use-package org-modern   )
+(use-package ox-gfm       )
+(use-package projectile   )
+(use-package which-key    )
+(use-package yafolding    )
+(use-package yasnippet    )
 
 (helm-mode)
 
