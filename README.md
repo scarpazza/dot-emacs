@@ -1,14 +1,12 @@
 dot-emacs
 =========
 
-This project is a semi-systematic attempt to modernize and clean up portions of my emacs startup
-files that I have accumulated over the years.
+This is a semi-systematic attempt to clean up my emacs setup, that is still somewhat actively maintained in 2025, and
+it has been reasonably tested on linux, MacOs and WSL.
 
-They are extremely subjective. Take what you find useful, leave what you don't.
-To learn more on the individual settings, just read the files.
-They should be commented reasonably well.
-
-The fundamental philosophy of my choices are as follows.
+The entire project is, like any emacs setup, entirely subjective.
+Take what you find useful, leave what you don't.
+Individual files should be pretty self-explanatory, and commented reasonably well where not self-explanatory.
 
 
 Where to start
@@ -27,7 +25,16 @@ make them symbolic links, such as:
     cd ~/git_sandboxes/dot-emacs/.emacs.d/
     for f in scarpaz-*.el; do ln -svf `pwd`/$f ~/.emacs.d/$f; done
 
-It's not crazy... for me. It might be crazy for you. You do you.
+
+First run
+--------------
+On a first emacs run, you likely won't have the necessary fonts to decorate the doom modeline.
+Add them via:
+- `M-x nerd-icons-install-fonts`
+- `M-x all-the-icons-install-fonts`
+
+This is only necessary a first time.
+
 
 
 Key Bindings
@@ -37,12 +44,11 @@ Key Bindings
 
 ### Global key bindings
 
-A lot of default emacs key bindings are, as perceived in 2021, insane.
+A lot of emacs's default key bindings are insane, as perceived in 2025.
 Many well curated emacs packages remap them radically.
 
 My philosophy is to change only those I use most frequently, while leaving
-most original keybindings in place, unless there's other compelling
-benefit to remove them.
+the rest in place, unless there's other compelling benefit to remove them.
 
 * Some extremely common function take three key presses with the default bindings.
   One example is saving (`C-x C-s`).
@@ -98,7 +104,7 @@ benefit to remove them.
   to `helm-mini`. That's an extremely useful command to have a one
   keystroke away.  F24 is also the top rightmost key in that corner of
   the battleship, so muscle memory is easy to build on it.
-  
+
 * I choose the following helm replacements for existing emacs functions:
 
 | Key     | New binding           | Commentary                                                                                |
@@ -107,7 +113,7 @@ benefit to remove them.
 | `C-s`   | `swiper`              | Perform incremental search all through the file rather than only on the first occurrence. |
 | `M-y`   | `helm-show-kill-ring` | Display the entire kill ring rather than popping one entry at a time from it.             |
 | `F3`    | `helm-find-files`     | A way better find file mode.                                                              |
-  
+
 
 Calendar
 ---------
