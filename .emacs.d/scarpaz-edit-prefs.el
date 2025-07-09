@@ -63,6 +63,7 @@
 (use-package company       :ensure t)
 (use-package dap-mode      :ensure t)
 (use-package doom-themes   :ensure t)
+(use-package efar          :ensure t)
 (use-package expand-region :ensure t)
 (use-package flycheck      :ensure t)
 (use-package helm          :ensure t)
