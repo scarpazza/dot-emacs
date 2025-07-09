@@ -11,11 +11,12 @@
 
 ;; Replace existing features with more advanced, helm-based alternatives
 (require 'helm)
-(require 'helm-swoop)
+
+(require 'swiper-helm)
 
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
-(global-set-key (kbd "C-s")     'helm-swoop)
+(global-set-key (kbd "C-s")     'swiper)
 (global-set-key (kbd "M-x")     'helm-M-x)
 (global-set-key (kbd "M-y")     'helm-show-kill-ring)
 

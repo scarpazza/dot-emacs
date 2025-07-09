@@ -1,3 +1,4 @@
+(require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
 
@@ -54,33 +55,39 @@
  window-combination-resize     t           ;; Resize windows proportionally
  )
 
-(use-package all-the-icons)
-(use-package avy          )
-(use-package company      )
-(use-package dap-mode     )
-(use-package doom-themes  )
-(use-package flycheck     )
-(use-package helm         )
-(use-package helm-files   )
-(use-package helm-ag      )
-(use-package helm-core    )
-(use-package helm-lsp     )
-(use-package helm-swoop   )
-(use-package helm-xref    )
-(use-package hydra        )
-(use-package lsp-mode     )
-(use-package lsp-treemacs )
-(use-package org-jira     )
-(use-package org-modern   )
-(use-package ox-gfm       )
-(use-package projectile   )
-(use-package which-key    )
-(use-package yafolding    )
-(use-package yasnippet    )
+
+(use-package rainbow-mode  :ensure t)
+
+(use-package all-the-icons :ensure t)
+(use-package avy           :ensure t)
+(use-package company       :ensure t)
+(use-package dap-mode      :ensure t)
+(use-package doom-themes   :ensure t)
+(use-package expand-region :ensure t)
+(use-package flycheck      :ensure t)
+(use-package helm          :ensure t)
+;(use-package helm-files    :ensure t) -- no longer available -- investigate
+;(use-package helm-ag       :ensure t) -- no longer available -- investigate
+(use-package helm-core     :ensure t)
+(use-package helm-lsp      :ensure t)
+(use-package helm-xref     :ensure t)
+(use-package hydra         :ensure t)
+(use-package lsp-mode      :ensure t)
+(use-package lsp-treemacs  :ensure t)
+(use-package magit         :ensure t)
+(use-package org-jira      :ensure t)
+(use-package org-modern    :ensure t)
+(use-package ox-gfm        :ensure t)
+(use-package projectile    :ensure t)
+(use-package swiper-helm   :ensure t)
+(use-package which-key     :ensure t)
+(use-package yafolding     :ensure t)
+(use-package yasnippet     :ensure t)
 
 (helm-mode)
 
 (use-package recentf
+  :ensure t
   :init
   (setq
     recentf-save-file "~/.emacs.d/recentf"
@@ -92,25 +99,32 @@
 )
 
 (use-package markdown-mode
+  :ensure t
   :commands (markdown-mode gfm-mode)
   :init (setq markdown-command "multimarkdown"))
 
 (use-package all-the-icons-dired
+   :ensure t
    :after all-the-icons
    :hook (dired-mode . all-the-icons-dired-mode))
 
 
 (use-package doom-modeline
+  :ensure t
   :config (doom-modeline-mode))
 
 (use-package expand-region
+  :ensure t
   :bind ("C-=" . er/expand-region))
+
 (require 'expand-region) ;; needed for byte compilation
 
 (use-package rainbow-delimiters
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package magit
+  :ensure t
   :diminish magit-auto-revert-mode
   :diminish auto-revert-mode
   :bind (("C-c g" . #'magit-status))
@@ -122,6 +136,7 @@
 (require 'magit) ;; needed for byte compilation
 
 (use-package whitespace
+  :ensure t
   :hook
   (prog-mode . whitespace-mode)
   (text-mode . whitespace-mode)
@@ -150,6 +165,7 @@
 (setq helm-swoop-pre-input-function (lambda () nil))
 
 (use-package which-key
+  :ensure t
   :custom
   (which-key-setup-side-window-bottom)
   (which-key-enable-extended-define-key t)
