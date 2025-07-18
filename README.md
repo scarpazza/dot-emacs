@@ -1,8 +1,9 @@
 dot-emacs
 =========
 
-This is a semi-systematic attempt to clean up my emacs setup, that is still somewhat actively maintained in 2025, and
-it has been reasonably tested on linux, MacOs and WSL.
+This is a semi-systematic attempt to clean up my emacs setup, that is
+still somewhat actively maintained in 2025, and it has been reasonably
+tested on linux, MacOs and WSL.
 
 The entire project is, like any emacs setup, entirely subjective.
 Take what you find useful, leave what you don't.
